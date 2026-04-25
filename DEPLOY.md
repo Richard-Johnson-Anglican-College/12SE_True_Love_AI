@@ -31,21 +31,44 @@ git clone https://github.com/Richard-Johnson-Anglican-College/12SE_True_Love_AI.
 cd 12SE_True_Love_AI
 ```
 
-### **Step 3: Create a Virtual Environment**
+### **Step 3: Create a Virtual Environment** ⚡ Fast Method
 
 ```bash
-mkvirtualenv --python=/usr/bin/python3.13 trueloveai-venv
+mkvirtualenv --python=/usr/bin/python3.13 --system-site-packages trueloveai-venv
 ```
 
 This activates automatically. Your prompt will now show `(trueloveai-venv)`.
 
-### **Step 4: Install Dependencies**
+> **💡 Why `--system-site-packages`?**
+> PythonAnywhere already has the exact versions of `numpy`, `pandas`, `matplotlib`, and `scikit-learn` that we need (verified pre-installed in `/usr/lib/python3.13/site-packages`). This flag inherits them, so you skip ~10-20 minutes of slow source compilation on the free tier.
+
+### **Step 4: Install Only Flask (Everything Else Inherited)**
 
 ```bash
-pip install -r requirements.txt
+cd ~/12SE_True_Love_AI
+pip install Flask==3.0.3
 ```
 
-Wait ~2 minutes for everything to install.
+Takes ~10 seconds. The other packages (`scikit-learn`, `pandas`, `numpy`, `matplotlib`) are inherited from the system — no compilation needed.
+
+### **Step 4b: Verify All Packages Are Available**
+
+```bash
+python -c "import flask, pandas, numpy, matplotlib, sklearn; print('Flask:', flask.__version__); print('pandas:', pandas.__version__); print('numpy:', numpy.__version__); print('matplotlib:', matplotlib.__version__); print('sklearn:', sklearn.__version__)"
+```
+
+You should see:
+```
+Flask: 3.0.3
+pandas: 2.2.2
+numpy: 2.1.0
+matplotlib: 3.9.2
+sklearn: 1.6.0
+```
+
+✅ All versions match — perfect.
+
+> **⚠️ Avoid this slow alternative:** Running `pip install -r requirements.txt` in a fresh venv (without `--system-site-packages`) will try to compile `pandas 2.2.2` from source because no Python 3.13 wheel exists. This can hang for 10-20 minutes on the free tier or fail entirely. Always use the `--system-site-packages` approach above.
 
 ### **Step 5: Create the Web App**
 
@@ -246,6 +269,22 @@ Common fixes:
 
 - Charts use matplotlib — should work on PythonAnywhere by default
 - If issue persists, retrain models: click "🔄 Retrain Models" button on the admin dashboard
+
+### **`pip install` stuck on "Preparing metadata (pyproject.toml)..."**
+
+This means pip is trying to **compile pandas/numpy from source** — very slow on free tier (10-20 mins) and may hang indefinitely.
+
+**Fix:** Cancel with `Ctrl+C` and recreate the venv with `--system-site-packages`:
+
+```bash
+deactivate
+rmvirtualenv trueloveai-venv   # or: rm -rf ~/.virtualenvs/trueloveai-venv (faster)
+mkvirtualenv --python=/usr/bin/python3.13 --system-site-packages trueloveai-venv
+cd ~/12SE_True_Love_AI
+pip install Flask==3.0.3
+```
+
+This inherits PythonAnywhere's pre-built numpy/pandas/matplotlib/scikit-learn — instant setup.
 
 ### **Need to retrain models on PythonAnywhere**
 
