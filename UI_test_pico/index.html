@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>When Will I Find True Love? - Pico Mockup</title>
+
+    <!-- Pico CSS (free, MIT licensed) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <!-- Custom fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Brand color overrides for Pico */
+        :root {
+            --pico-font-family-sans-serif: 'Roboto', system-ui, -apple-system, sans-serif;
+            --pico-font-family-headings: 'Lora', Georgia, serif;
+            --pico-primary: rgb(211, 169, 153);
+            --pico-primary-hover: rgb(195, 153, 137);
+            --pico-primary-focus: rgba(211, 169, 153, 0.25);
+            --pico-primary-inverse: #fff;
+            --pico-background-color: rgb(233, 230, 225);
+            --pico-color: rgb(33, 29, 30);
+            --pico-h1-color: rgb(33, 29, 30);
+            --pico-h2-color: rgb(33, 29, 30);
+            --pico-card-background-color: rgba(255, 255, 255, 0.9);
+            --pico-card-border-color: rgba(255, 255, 255, 0.8);
+            --pico-form-element-background-color: rgba(233, 230, 225, 0.5);
+            --pico-form-element-border-color: rgba(165, 174, 183, 0.3);
+            --pico-muted-color: rgb(165, 174, 183);
+            --pico-border-radius: 0.75rem;
+        }
+
+        body {
+            background: linear-gradient(135deg, rgb(233, 230, 225) 0%, rgb(245, 242, 237) 100%);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Lora', serif;
+        }
+
+        /* Hero title */
+        .hero-title {
+            font-family: 'Lora', serif;
+            text-align: center;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 600;
+            margin: 2rem 0;
+            line-height: 1.1;
+        }
+
+        /* Glassmorphism card */
+        article {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px rgba(33, 29, 30, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        /* Disclaimer styling */
+        .disclaimer {
+            background: linear-gradient(135deg, rgba(211, 169, 153, 0.15), rgba(211, 169, 153, 0.25));
+            border: 1px solid rgba(211, 169, 153, 0.3);
+            padding: 1.25rem 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Range slider with value display */
+        .range-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .range-group input[type="range"] {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .range-value {
+            min-width: 3rem;
+            text-align: center;
+            font-weight: 600;
+            color: rgb(211, 169, 153);
+            font-size: 1.1rem;
+            font-family: 'Lora', serif;
+        }
+
+        /* Prediction result card */
+        .prediction-result {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            border: 2px solid rgba(211, 169, 153, 0.4);
+            box-shadow: 0 8px 32px rgba(211, 169, 153, 0.2);
+        }
+
+        .prediction-category {
+            font-family: 'Lora', serif;
+            text-align: center;
+            font-size: clamp(1.75rem, 5vw, 2.25rem);
+            font-weight: 600;
+            color: rgb(211, 169, 153);
+            margin-bottom: 1rem;
+        }
+
+        .prediction-months {
+            text-align: center;
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .explanation {
+            background: linear-gradient(135deg, rgba(233, 230, 225, 0.6), rgba(233, 230, 225, 0.4));
+            padding: 2rem;
+            border-radius: 1.25rem;
+            border-left: 5px solid rgb(211, 169, 153);
+        }
+
+        .explanation h3 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .explanation ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .explanation li {
+            padding: 0.5rem 0;
+            line-height: 1.7;
+        }
+
+        .explanation .meta {
+            font-size: 0.9rem;
+            color: rgb(165, 174, 183);
+        }
+
+        .explanation .header-line {
+            font-family: 'Lora', serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-top: 1.25rem;
+        }
+
+        /* Button override */
+        button[type="submit"] {
+            background: linear-gradient(135deg, rgb(211, 169, 153), rgb(195, 153, 137));
+            border: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 16px rgba(211, 169, 153, 0.3);
+        }
+
+        button[type="submit"]:hover {
+            background: linear-gradient(135deg, rgb(195, 153, 137), rgb(180, 140, 125));
+            transform: translateY(-2px);
+        }
+
+        /* Nav link */
+        .nav-link {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+        }
+
+        .nav-link a {
+            color: rgb(211, 169, 153);
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .nav-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile-first responsive container */
+        main.container {
+            max-width: 700px;
+            padding: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            main.container {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <h1 class="hero-title">When Will I Find<br>True Love?</h1>
+
+        <div class="disclaimer">
+            ⚠️ <strong>Disclaimer:</strong> This is a fun machine learning demo. It does NOT predict real-life outcomes. (If it says 100 months, please don't panic).
+        </div>
+
+        <article>
+            <header>
+                <h2>Tell Us About Yourself</h2>
+            </header>
+
+            <form>
+                <label for="social">
+                    Social Activity Level (1-10)
+                    <div class="range-group">
+                        <input type="range" id="social" name="social_activity" min="1" max="10" value="5" oninput="document.getElementById('social-value').textContent = this.value">
+                        <span class="range-value" id="social-value">5</span>
+                    </div>
+                </label>
+
+                <label for="confidence">
+                    Confidence Level (1-10)
+                    <div class="range-group">
+                        <input type="range" id="confidence" name="confidence_level" min="1" max="10" value="5" oninput="document.getElementById('confidence-value').textContent = this.value">
+                        <span class="range-value" id="confidence-value">5</span>
+                    </div>
+                </label>
+
+                <label for="hobbies">
+                    Number of Hobbies (max 10)
+                    <input type="number" id="hobbies" name="hobbies_count" min="0" max="10" value="3">
+                </label>
+
+                <label for="screentime">
+                    Screen Time (hours per day)
+                    <input type="number" id="screentime" name="screen_time" min="0" max="24" step="0.5" value="4">
+                </label>
+
+                <label for="goesout">
+                    Goes Out Per Week
+                    <input type="number" id="goesout" name="goes_out_per_week" min="0" max="7" value="2">
+                </label>
+
+                <label for="talks">
+                    Talks to New People (1-10)
+                    <div class="range-group">
+                        <input type="range" id="talks" name="talks_to_new_people" min="1" max="10" value="5" oninput="document.getElementById('talks-value').textContent = this.value">
+                        <span class="range-value" id="talks-value">5</span>
+                    </div>
+                </label>
+
+                <button type="submit">🔮 Predict My Future</button>
+            </form>
+        </article>
+
+        <!-- Sample Prediction Result (showing what it looks like AFTER submitting) -->
+        <article class="prediction-result">
+            <div class="prediction-category">✨ Soon ✨</div>
+            <div class="prediction-months">Estimated: 4.2 months</div>
+
+            <div class="explanation">
+                <h3>Why This Prediction?</h3>
+                <ul>
+                    <li class="meta">Model Analysis: Decision Tree classified you as 'Soon' with 87% confidence</li>
+                    <li class="meta">Timeline Prediction: Polynomial Ridge Regression calculated 4.2 months based on feature interactions</li>
+                    <li class="header-line">✓ Strengths:</li>
+                    <li>• Good social activity level (5/10) — solid baseline for meeting people</li>
+                    <li>• Moderate screen time (4 hrs/day) — leaves room for in-person interactions</li>
+                    <li class="header-line">→ Observations:</li>
+                    <li>• Average confidence (5/10) — could be a slight boost area</li>
+                    <li>• 2 outings/week is decent — more would create more opportunities</li>
+                    <li class="header-line">🔬 ML Insight:</li>
+                    <li>The model weighs 'screen time' (43%) and 'talks to new people' (21%) most heavily in predictions</li>
+                </ul>
+            </div>
+        </article>
+
+        <nav class="nav-link">
+            <a href="admin.html">🧠 Admin Dashboard →</a>
+        </nav>
+    </main>
+</body>
+</html>
