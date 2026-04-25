@@ -2,7 +2,21 @@
 
 A playful machine learning web application that predicts when someone will find "true love" based on lifestyle data. Built for educational purposes to demonstrate classification and regression models.
 
-## 🎯 Features
+## �️ Interactive NotebookLM (Ask Questions!)
+
+Want to learn more about this project? Use the **NotebookLM** companion to ask any questions about the code, ML models, or design decisions:
+
+🔗 **[Open NotebookLM for this Project](https://notebooklm.google.com/notebook/5f3f71d3-8dcc-4592-92ce-7b0f3b68dbf4?authuser=1)**
+
+Great for:
+- Students exploring how the ML models work
+- Teachers preparing lesson content
+- Asking specific questions about feature importance, overfitting, or implementation details
+- Getting AI-powered explanations grounded in this project's documentation
+
+---
+
+## �🎯 Features
 
 - **Dual ML Models:**
   - Decision Tree Classifier (predicts category: Very Soon, Soon, Eventually, Keep Trying)
