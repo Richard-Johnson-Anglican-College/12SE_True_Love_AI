@@ -118,7 +118,62 @@
         </div>
 
         <div class="card">
-            <h2>📈 Feature Importance</h2>
+            <h2>� Polynomial Regression Curve (Visual Proof)</h2>
+            <p style="color: rgb(165, 174, 183); margin-bottom: 1rem; font-size: 0.95rem;">
+                This chart shows the actual curve learned by the Polynomial Ridge Regression model. 
+                Notice how it's not a straight line — that's the "polynomial" part working!
+            </p>
+            {% if polynomial_chart %}
+            <div style="background: white; padding: 1rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <img src="data:image/png;base64,{{ polynomial_chart }}" alt="Polynomial Regression Curve" style="width: 100%; height: auto; display: block;">
+            </div>
+            <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.5); border-radius: 0.75rem; font-size: 0.9rem; color: rgb(33, 29, 30);">
+                <strong>🔬 What you're seeing:</strong> Each point on the curve is a real prediction from <code>sklearn.linear_model.Ridge</code>. 
+                Other features are held constant (Social=5, Confidence=5, Hobbies=3, GoesOut=3, TalksToNew=5) while screen time varies from 0-16 hours.
+            </div>
+            {% else %}
+            <p style="color: rgb(165, 174, 183); text-align: center; padding: 2rem;">Train models to see the polynomial curve.</p>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <h2>🌳 Decision Tree Structure (Actual Model)</h2>
+            <p style="color: rgb(165, 174, 183); margin-bottom: 1rem; font-size: 0.95rem;">
+                This is the real flowchart sklearn built from your training data. Each box is a decision, and each leaf is a final answer.
+            </p>
+            {% if tree_chart %}
+            <div style="background: white; padding: 1rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow-x: auto;">
+                <img src="data:image/png;base64,{{ tree_chart }}" alt="Decision Tree Structure" style="width: 100%; height: auto; display: block; min-width: 800px;">
+            </div>
+            <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.5); border-radius: 0.75rem; font-size: 0.9rem; color: rgb(33, 29, 30);">
+                <strong>🔬 How to read it:</strong> Start at the top. Each box asks a yes/no question. Follow the branches based on the answer until you reach a colored leaf — that's the predicted category. Generated using <code>sklearn.tree.plot_tree()</code>.
+            </div>
+            {% else %}
+            <p style="color: rgb(165, 174, 183); text-align: center; padding: 2rem;">Train models to see the tree structure.</p>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <h2>🔥 Feature Interaction Heatmap</h2>
+            <p style="color: rgb(165, 174, 183); margin-bottom: 1rem; font-size: 0.95rem;">
+                This shows how TWO features combine to affect predictions. Green = quick love, Red = longer wait.
+            </p>
+            {% if interaction_chart %}
+            <div style="background: white; padding: 1rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <img src="data:image/png;base64,{{ interaction_chart }}" alt="Feature Interaction Heatmap" style="width: 100%; height: auto; display: block;">
+            </div>
+            <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.5); border-radius: 0.75rem; font-size: 0.9rem; color: rgb(33, 29, 30);">
+                <strong>🔬 What you're seeing:</strong> The polynomial model captures interactions between features. 
+                High social activity + low screen time (top-left) gives the fastest predictions. 
+                Low social + high screen (bottom-right) gives the slowest. This is why we use <code>PolynomialFeatures(degree=2)</code> — to capture these combined effects!
+            </div>
+            {% else %}
+            <p style="color: rgb(165, 174, 183); text-align: center; padding: 2rem;">Train models to see feature interactions.</p>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <h2>�📈 Feature Importance</h2>
             <div class="chart-container">
                 <div class="chart-title">Which features matter most?</div>
                 <div class="bar-chart">
