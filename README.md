@@ -2,7 +2,15 @@
 
 A playful machine learning web application that predicts when someone will find "true love" based on lifestyle data. Built for educational purposes to demonstrate classification and regression models.
 
-## �️ Interactive NotebookLM (Ask Questions!)
+## 🌐 Live Demo
+
+🚀 **Try it now:** [https://trueloveai.pythonanywhere.com/](https://trueloveai.pythonanywhere.com/)
+
+🧠 **Admin dashboard (ML internals):** [https://trueloveai.pythonanywhere.com/admin](https://trueloveai.pythonanywhere.com/admin)
+
+---
+
+## 🗣️ Interactive NotebookLM (Ask Questions!)
 
 Want to learn more about this project? Use the **NotebookLM** companion to ask any questions about the code, ML models, or design decisions:
 
