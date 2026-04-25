@@ -12,7 +12,8 @@ A playful machine learning web application that predicts when someone will find 
 - **Interactive Web Interface:**
   - Modern, elegant UI with enhanced typography and visual hierarchy
   - Real-time predictions with detailed, ML-driven explanations
-  - Admin dashboard with model metrics, visualizations, and ML transparency features
+  - Admin dashboard with model metrics, ML transparency features
+  - Visual ML charts: polynomial curve, decision tree diagram, interaction heatmap
   - Input validation with realistic range checking
 
 - **Educational Focus:**
@@ -127,6 +128,11 @@ Visit `http://localhost:5000` in your browser.
   - Sample prediction with actual probability distribution
   - Demonstrates real `predict_proba()` calculations
   - Proves ML is not hardcoded
+- **Visual ML Charts:** ⭐ NEW
+  - **Polynomial Regression Curve:** Shows the actual curve learned by Ridge regression
+  - **Decision Tree Diagram:** Renders the real sklearn tree structure (`plot_tree`)
+  - **Feature Interaction Heatmap:** 2D visualization showing how features combine
+  - All charts generated from live model predictions (matplotlib)
 - **Model Metrics:** Training accuracy and error with overfitting warnings
 - **Feature Importance:** Visual bar chart with actual weights
 - **Retrain Button:** Retrain models with current CSV data

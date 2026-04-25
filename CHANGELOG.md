@@ -222,6 +222,56 @@ All notable changes to the "When Will I Find True Love?" project will be documen
 
 ---
 
+## [2026-04-25] - Visual ML Charts (Admin Dashboard)
+
+### Added
+- **Polynomial Regression Curve Visualization**
+  - Visual chart showing screen_time vs predicted months
+  - Generated using matplotlib with actual `Ridge.predict()` outputs
+  - Shaded area under curve for visual emphasis
+  - Marker dots at key points (2hr, 6hr, 12hr)
+  - Annotation pointing out the curve characteristic
+  - Proves the polynomial model isn't a straight line
+
+- **Decision Tree Structure Diagram**
+  - Renders actual sklearn decision tree using `plot_tree()`
+  - Shows all 19 nodes and 10 leaves
+  - Color-coded by predicted class
+  - Each box displays decision rules and class distribution
+  - Horizontal scroll on mobile for full visibility
+
+- **Feature Interaction Heatmap**
+  - 2D grid: social_activity × screen_time → predicted months
+  - Green-to-red colormap (RdYlGn_r) for intuitive reading
+  - Demonstrates why `PolynomialFeatures(degree=2)` matters
+  - Visualizes feature interactions captured by polynomial expansion
+
+- **Chart Generation Infrastructure**
+  - `fig_to_base64()` helper for inline image embedding
+  - `generate_polynomial_curve()` function
+  - `generate_decision_tree_chart()` function
+  - `generate_feature_interaction_chart()` function
+  - COLORS dict matching UI palette (dusty rose, cool gray-blue, etc.)
+  - Server-safe matplotlib backend (`Agg`)
+
+- **Project Hygiene**
+  - Created `.gitignore` (excludes `__pycache__`, IDE files, OS files)
+  - Removed accidentally committed cache files
+
+### Changed
+- **`requirements.txt`** - Added matplotlib==3.8.2
+- **`templates/admin.html`** - Added 3 new visualization cards with educational annotations
+- **`app.py`** - Added imports for matplotlib, base64, io, and `plot_tree`
+
+### Educational Value
+- Students can SEE the polynomial curve (not just read about it)
+- Students can SEE the actual decision tree structure
+- Students can SEE feature interactions visually
+- Each chart includes "What you're seeing" explanations referencing actual sklearn methods
+- Reinforces ML transparency goals
+
+---
+
 ## [2026-04-25] - Academic Rigor & Research References
 
 ### Added

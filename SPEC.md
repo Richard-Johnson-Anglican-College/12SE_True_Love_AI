@@ -17,10 +17,12 @@ This specification has been completely implemented with additional features beyo
 
 ### Enhancements Beyond Spec
 - ✅ **ML Transparency Features** - Admin dashboard shows actual sklearn model parameters
+- ✅ **Visual ML Charts** - Polynomial curve, decision tree diagram, feature interaction heatmap (matplotlib)
 - ✅ **Enhanced Explanations** - Detailed, ML-driven reasoning with categorized feedback
 - ✅ **Input Validation** - Server-side range checking with warnings
 - ✅ **Typography Improvements** - Enhanced visual hierarchy and readability
 - ✅ **Comprehensive Documentation** - ML_EXPLAINED.md (teaching guide) and OPTIMAL_PREDICTIONS.md
+- ✅ **Research-Backed Features** - Academic citations linking features to relationship psychology
 - ✅ **Optimization Tools** - Scripts to find optimal input combinations
 - ✅ **Data Quality Analysis** - Automated testing and validation tools
 
