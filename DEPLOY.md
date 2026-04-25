@@ -122,23 +122,100 @@ You should see your True Love AI app running live!
 
 ## 🔄 Updating After Code Changes (Do This Each Update)
 
-After you push changes to GitHub, run these on PythonAnywhere:
+Once code is pushed to GitHub, PythonAnywhere needs to **pull** the changes and **reload** the web app. This is a 30-second process.
 
-### **Quick Update (Bash Console)**
+### ⚡ Quick Update Workflow (3 Steps)
+
+#### **Step 1: On your local machine**
+
+Make changes → commit → push (you already do this):
+
+```powershell
+git add .
+git commit -m "Your changes"
+git push
+```
+
+#### **Step 2: On PythonAnywhere Bash console**
+
+```bash
+cd ~/12SE_True_Love_AI
+git pull
+```
+
+#### **Step 3: Reload the web app**
+
+Two ways to reload:
+
+**Option A: From the Web tab** (easier)
+- Go to https://www.pythonanywhere.com/user/trueloveai/webapps/
+- Click the green **"Reload trueloveai.pythonanywhere.com"** button
+
+**Option B: From Bash** (faster)
+```bash
+touch /var/www/trueloveai_pythonanywhere_com_wsgi.py
+```
+This "touches" the WSGI file, triggering an auto-reload.
+
+✅ That's it! Your changes are now live at https://trueloveai.pythonanywhere.com/
+
+---
+
+### 🎯 Special Cases
+
+#### **If you changed `requirements.txt`** (added/upgraded packages)
+
+Add a `pip install` step:
 
 ```bash
 workon trueloveai-venv
 cd ~/12SE_True_Love_AI
 git pull
-pip install -r requirements.txt   # only if requirements changed
+pip install -r requirements.txt
 ```
 
-### **Then Reload the Web App**
+Then reload.
 
-- Go to **Web** tab
-- Click the green **"Reload"** button
+#### **If you retrained models locally** (`models.pkl` changed)
 
-That's it! Your changes are live.
+**Option 1: Pull the new pickle (easy)**
+```bash
+cd ~/12SE_True_Love_AI
+git pull
+```
+Then reload. Done.
+
+**Option 2: Retrain on PythonAnywhere** (cleaner)
+- Visit https://trueloveai.pythonanywhere.com/admin
+- Click **"🔄 Retrain Models"** button
+- Done — no Bash needed
+
+#### **If changes don't appear after reload**
+- Clear your browser cache (Ctrl+Shift+R)
+- Check the error logs (Web tab → "Log files")
+
+---
+
+### 🚀 One-Liner for Future Updates
+
+You can do everything in one command on PythonAnywhere Bash:
+
+```bash
+cd ~/12SE_True_Love_AI && git pull && touch /var/www/trueloveai_pythonanywhere_com_wsgi.py
+```
+
+Save this as a reminder! 🎯
+
+---
+
+### 📝 Update Action Cheat Sheet
+
+| What Changed | Action Needed |
+|--------------|---------------|
+| HTML/CSS/Python code | `git pull` + reload |
+| `requirements.txt` | `git pull` + `pip install` + reload |
+| `models.pkl` | `git pull` + reload, OR click retrain button |
+| `data.csv` | `git pull` + retrain models |
 
 ---
 
