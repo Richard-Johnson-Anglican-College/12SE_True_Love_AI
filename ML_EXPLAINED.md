@@ -156,7 +156,45 @@ The Decision Tree learns which questions are most important:
 | **Goes Out Per Week** | 0.15 (15%) | Important! More outings = more chances |
 | **Confidence Level** | 0.13 (13%) | Helpful! Confidence attracts people |
 | **Social Activity** | 0.08 (8%) | Minor role! General social vibe |
-| **Hobbies Count** | 0.00 (0%) | Minimal direct impact, but helps in interactions |
+| **Hobbies Count** | 0.00 (0%) | Tree ignores it — but the Polynomial model uses it heavily! (See below) |
+
+### 🤔 The Hobbies Mystery: Two Models Disagree!
+
+The Decision Tree assigns **0% importance** to hobbies, but does that mean hobbies don't matter? **No!** Here's the surprising truth:
+
+**Decision Tree says:** "I never use hobbies to make decisions" (0% importance)
+**Polynomial Ridge says:** "Hobbies actually matter A LOT — there's a sweet spot!"
+
+When we hold all other features constant and vary only hobbies, the Polynomial model produces this curve:
+
+| Hobbies | Predicted Months | Insight |
+|---------|------------------|---------|
+| 0 | 13.0 | No common ground with people |
+| 2 | 10.5 | Some shared interests |
+| 4 | 8.9 | Good variety |
+| **6** | **8.1** | ⭐ **Sweet spot!** |
+| 8 | 8.1 | Still optimal |
+| 10 | 8.9 | Going UP — too busy to date! |
+
+**This is a U-shaped curve!** It captures real-world wisdom:
+- 🚫 **Too few hobbies (0-2):** Nothing to talk about, no shared activities
+- ✅ **Just right (4-8):** Diverse interests, opportunities to meet people
+- 🚫 **Too many (9-10):** Schedule is too packed for relationships
+
+### Why the Models Disagree
+
+- **Decision Trees** use *hard splits* (e.g., "is hobbies > 5?"). If no single threshold cleanly separates the data, hobbies gets ignored.
+- **Polynomial Ridge** uses *smooth curves* and creates **28 features** from 6 inputs — including interactions like `hobbies × confidence` and `hobbies²`. This captures subtle effects.
+
+### 🎓 Teaching Moment
+
+**"0% importance ≠ no impact!"**
+
+This is a great lesson about ML:
+- Different models see the same data differently
+- Feature importance from one model doesn't tell the whole story
+- Interaction effects can hide a feature's true contribution
+- Always validate findings with multiple approaches
 
 ### How Importance is Calculated
 
