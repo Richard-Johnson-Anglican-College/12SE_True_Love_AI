@@ -174,9 +174,12 @@ Timeline Prediction: Polynomial Ridge Regression calculated 2.1 months based on 
 * **Decision Tree (Training Accuracy):** 80% *(Note: 100% means it memorized the data!)*
 * **Polynomial Ridge (Training Error):** ±2.47 months *(Lower is better, but too low = overfitting)*
 
-**Visualizations**
+**Visualizations** ⭐ NEW
 * Feature importance bar chart (with actual weights)
 * Probability distribution bars (real-time calculations)
+* **Polynomial Regression Curve** - Visual proof of the polynomial model (matplotlib)
+* **Decision Tree Diagram** - Actual sklearn tree structure (`plot_tree`)
+* **Feature Interaction Heatmap** - 2D visualization of feature combinations
 
 ---
 

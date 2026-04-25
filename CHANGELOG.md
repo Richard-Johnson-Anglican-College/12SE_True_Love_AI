@@ -222,6 +222,69 @@ All notable changes to the "When Will I Find True Love?" project will be documen
 
 ---
 
+## [2026-04-25] - Pico CSS Migration (Mobile-First Redesign)
+
+### Added
+- **Pico CSS Framework Integration**
+  - Added Pico CSS v2 via CDN (MIT licensed, free, ~10kb)
+  - Class-less semantic HTML approach
+  - Built-in mobile-first responsive design
+  - Beautiful default form styling
+  - Auto theme support via `data-theme` attribute
+
+- **Mobile-First Responsive Layout**
+  - Fluid typography using `clamp()` (titles scale 2.5rem → 4rem)
+  - 2-column stats grid on mobile, 4-column on desktop (≥768px)
+  - Stacked metric cards on mobile, side-by-side on desktop
+  - Bar chart labels stack vertically on small screens
+  - Probability bars adapt grid columns at 480px breakpoint
+  - Container padding adjusts (1rem mobile → 2rem desktop)
+
+### Changed
+- **`templates/index.html`** - Restructured with Pico semantic HTML
+  - `<div class="card">` → `<article>` with `<header>`
+  - Container changed to `<main class="container narrow">`
+  - Form fields use Pico's `<label>` wrapping pattern
+  - Cleaner, more accessible markup
+
+- **`templates/admin.html`** - Same semantic restructure
+  - All cards converted to `<article>` elements
+  - All charts wrapped in `.chart-image-wrapper`
+  - Removed inline styles, moved to stylesheet
+
+- **`static/css/style.css`** - Major refactor
+  - Reduced from ~700 lines to ~520 lines (organized sections)
+  - Now overrides Pico CSS variables for branding
+  - Brand colors preserved: cream, dusty rose, cool gray-blue
+  - Lora + Roboto typography preserved
+  - Glassmorphism effects preserved
+
+### Preserved
+- All Flask Jinja templating logic intact
+- All matplotlib chart generation (polynomial curve, tree, heatmap)
+- Range slider live value JavaScript
+- Retrain button AJAX functionality
+- Brand identity (cream/rose color palette)
+- Lora (serif) + Roboto (sans-serif) typography
+- Glassmorphism cards with backdrop blur
+- Gradient buttons
+
+### Benefits
+- ✅ True mobile-first responsive design (was desktop-first)
+- ✅ Fluid typography scales smoothly across all devices
+- ✅ Cleaner, semantic HTML (better for accessibility)
+- ✅ Smaller CSS footprint (less custom code to maintain)
+- ✅ Modern industry-standard structure
+- ✅ Better form styling out-of-the-box
+- ✅ Easier for students to understand HTML structure
+
+### Implementation
+- Created `pico-redesign` git branch for safe testing
+- Tested all routes return 200 OK (`/`, `/admin`, `/predict`)
+- Mockups in `UI_test_pico/` folder approved before merge
+
+---
+
 ## [2026-04-25] - Visual ML Charts (Admin Dashboard)
 
 ### Added

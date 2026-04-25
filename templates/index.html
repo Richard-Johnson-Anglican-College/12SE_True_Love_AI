@@ -1,114 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>When Will I Find True Love?</title>
+
+    <!-- Pico CSS (free, MIT licensed) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <!-- Custom fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Custom brand styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>When Will I Find<br>True Love?</h1>
-        
+    <main class="container narrow">
+        <h1 class="hero-title">When Will I Find<br>True Love?</h1>
+
         <div class="disclaimer">
             ⚠️ <strong>Disclaimer:</strong> This is a fun machine learning demo. It does NOT predict real-life outcomes. (If it says 100 months, please don't panic).
         </div>
 
         {% if error %}
-        <div class="card" style="border-left: 4px solid rgb(211, 169, 153); background: rgba(211, 169, 153, 0.1);">
-            <p style="color: rgb(33, 29, 30);"><strong>Error:</strong> {{ error }}</p>
-        </div>
+        <article class="warnings-card">
+            <p><strong>Error:</strong> {{ error }}</p>
+        </article>
         {% endif %}
 
         {% if validation_warnings %}
-        <div class="card" style="border-left: 4px solid rgb(211, 169, 153); background: rgba(211, 169, 153, 0.15);">
-            <p style="color: rgb(33, 29, 30); margin-bottom: 0.5rem;"><strong>⚠️ Validation Warnings:</strong></p>
-            <ul style="margin-left: 1.5rem; color: rgb(33, 29, 30);">
+        <article class="warnings-card">
+            <p><strong>⚠️ Validation Warnings:</strong></p>
+            <ul>
                 {% for warning in validation_warnings %}
                 <li>{{ warning }}</li>
                 {% endfor %}
             </ul>
-        </div>
+        </article>
         {% endif %}
 
-        <div class="card">
-            <h2>Tell Us About Yourself</h2>
+        <article>
+            <header>
+                <h2>Tell Us About Yourself</h2>
+            </header>
+
             <form method="POST" action="{{ url_for('predict') }}">
-                <div class="form-group">
-                    <label for="social">Social Activity Level (1-10)</label>
-                    <div class="range-container">
+                <label for="social">
+                    Social Activity Level (1-10)
+                    <div class="range-group">
                         <input type="range" id="social" name="social_activity" min="1" max="10" value="{{ form_data.social_activity if form_data else 5 }}">
                         <span class="range-value" id="social-value">{{ form_data.social_activity if form_data else 5 }}</span>
                     </div>
-                </div>
+                </label>
 
-                <div class="form-group">
-                    <label for="confidence">Confidence Level (1-10)</label>
-                    <div class="range-container">
+                <label for="confidence">
+                    Confidence Level (1-10)
+                    <div class="range-group">
                         <input type="range" id="confidence" name="confidence_level" min="1" max="10" value="{{ form_data.confidence_level if form_data else 5 }}">
                         <span class="range-value" id="confidence-value">{{ form_data.confidence_level if form_data else 5 }}</span>
                     </div>
-                </div>
+                </label>
 
-                <div class="form-group">
-                    <label for="hobbies">Number of Hobbies (max 10)</label>
+                <label for="hobbies">
+                    Number of Hobbies (max 10)
                     <input type="number" id="hobbies" name="hobbies_count" min="0" max="10" value="{{ form_data.hobbies_count if form_data else 3 }}">
-                </div>
+                </label>
 
-                <div class="form-group">
-                    <label for="screentime">Screen Time (hours per day)</label>
+                <label for="screentime">
+                    Screen Time (hours per day)
                     <input type="number" id="screentime" name="screen_time" min="0" max="24" step="0.5" value="{{ form_data.screen_time if form_data else 4 }}">
-                </div>
+                </label>
 
-                <div class="form-group">
-                    <label for="goesout">Goes Out Per Week</label>
+                <label for="goesout">
+                    Goes Out Per Week
                     <input type="number" id="goesout" name="goes_out_per_week" min="0" max="7" value="{{ form_data.goes_out_per_week if form_data else 2 }}">
-                </div>
+                </label>
 
-                <div class="form-group">
-                    <label for="talks">Talks to New People (1-10)</label>
-                    <div class="range-container">
+                <label for="talks">
+                    Talks to New People (1-10)
+                    <div class="range-group">
                         <input type="range" id="talks" name="talks_to_new_people" min="1" max="10" value="{{ form_data.talks_to_new_people if form_data else 5 }}">
                         <span class="range-value" id="talks-value">{{ form_data.talks_to_new_people if form_data else 5 }}</span>
                     </div>
-                </div>
+                </label>
 
                 <button type="submit">🔮 Predict My Future</button>
             </form>
-        </div>
+        </article>
 
         {% if prediction %}
-        <div class="prediction-result">
+        <article class="prediction-result">
             <div class="prediction-category">✨ {{ prediction.category }} ✨</div>
             <div class="prediction-months">Estimated: {{ prediction.months }} months</div>
-            
+
             <div class="explanation">
                 <h3>Why This Prediction?</h3>
                 <ul>
                     {% for reason in reasons %}
-                    {% if reason.startswith('Model Analysis:') or reason.startswith('Timeline Prediction:') %}
-                    <li style="font-family: 'Roboto', sans-serif; font-size: 0.9rem; color: rgb(165, 174, 183); font-weight: 400; padding: 0.4rem 0;">{{ reason }}</li>
-                    {% elif reason.startswith('✓') or reason.startswith('⚠') or reason.startswith('→') or reason.startswith('🔬') %}
-                    <li style="font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 600; color: rgb(33, 29, 30); margin-top: 1.25rem; padding-bottom: 0.5rem;">{{ reason }}</li>
-                    {% else %}
-                    <li style="font-family: 'Roboto', sans-serif;">{{ reason }}</li>
-                    {% endif %}
+                        {% if reason.startswith('Model Analysis:') or reason.startswith('Timeline Prediction:') %}
+                            <li class="meta">{{ reason }}</li>
+                        {% elif reason.startswith('✓') or reason.startswith('⚠') or reason.startswith('→') or reason.startswith('🔬') %}
+                            <li class="header-line">{{ reason }}</li>
+                        {% else %}
+                            <li>{{ reason }}</li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>
-        </div>
+        </article>
         {% endif %}
 
-        <div class="nav-link">
+        <nav class="nav-link">
             <a href="{{ url_for('admin') }}">🧠 Admin Dashboard →</a>
-        </div>
-    </div>
+        </nav>
+    </main>
 
     <script>
-        // Update range slider values
+        // Update range slider values live
         const sliders = [
             { input: 'social', display: 'social-value' },
             { input: 'confidence', display: 'confidence-value' },
@@ -118,10 +128,11 @@
         sliders.forEach(slider => {
             const input = document.getElementById(slider.input);
             const display = document.getElementById(slider.display);
-            
-            input.addEventListener('input', (e) => {
-                display.textContent = e.target.value;
-            });
+            if (input && display) {
+                input.addEventListener('input', (e) => {
+                    display.textContent = e.target.value;
+                });
+            }
         });
     </script>
 </body>

@@ -1,21 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🧠 Admin Dashboard - True Love AI</title>
+
+    <!-- Pico CSS (free, MIT licensed) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <!-- Custom fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Custom brand styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class="container-wide">
-        <h1>🧠 Admin Dashboard</h1>
+    <main class="container">
+        <h1 class="hero-title-small">🧠 Admin Dashboard</h1>
         <p class="subtitle">Model Lab & Training Metrics</p>
 
-        <div class="card">
-            <h2>📊 Dataset Summary</h2>
+        <!-- Dataset Summary -->
+        <article>
+            <header>
+                <h2>📊 Dataset Summary</h2>
+            </header>
+
             <div class="stats-grid">
                 <div class="stat-box">
                     <div class="stat-label">Total Records</div>
@@ -34,76 +45,84 @@
                     <div class="stat-value stat-unit">{% if tree_accuracy > 0 %}✓ Ready{% else %}⚠ Not Trained{% endif %}</div>
                 </div>
             </div>
-            <button onclick="retrainModels()">🔄 Retrain Models</button>
-            <div id="retrain-message" style="margin-top: 1rem; text-align: center; font-weight: 500;"></div>
-        </div>
 
-        <div class="card">
-            <h2>🤖 ML Model Architecture (Proof of Real ML)</h2>
+            <button class="retrain-btn" onclick="retrainModels()">🔄 Retrain Models</button>
+            <div id="retrain-message"></div>
+        </article>
+
+        <!-- ML Model Architecture -->
+        <article>
+            <header>
+                <h2>🤖 ML Model Architecture (Proof of Real ML)</h2>
+            </header>
             {% if model_details %}
-            <div style="background: linear-gradient(135deg, rgba(233, 230, 225, 0.5), rgba(233, 230, 225, 0.3)); padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem;">
-                <h3 style="font-family: 'Lora', serif; color: rgb(33, 29, 30); margin-bottom: 1rem; font-size: 1.1rem;">Decision Tree Classifier (sklearn)</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <div class="model-arch">
+                <h3>Decision Tree Classifier (sklearn)</h3>
+                <div class="arch-grid">
                     <div>
-                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Max Depth</div>
-                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.tree.max_depth }}</div>
+                        <div class="arch-stat-label">Max Depth</div>
+                        <div class="arch-stat-value">{{ model_details.tree.max_depth }}</div>
                     </div>
                     <div>
-                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Min Samples/Leaf</div>
-                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.tree.min_samples_leaf }}</div>
+                        <div class="arch-stat-label">Min Samples/Leaf</div>
+                        <div class="arch-stat-value">{{ model_details.tree.min_samples_leaf }}</div>
                     </div>
                     <div>
-                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Tree Nodes</div>
-                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.tree.n_nodes }}</div>
+                        <div class="arch-stat-label">Tree Nodes</div>
+                        <div class="arch-stat-value">{{ model_details.tree.n_nodes }}</div>
                     </div>
                     <div>
-                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Leaf Nodes</div>
-                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.tree.n_leaves }}</div>
+                        <div class="arch-stat-label">Leaf Nodes</div>
+                        <div class="arch-stat-value">{{ model_details.tree.n_leaves }}</div>
                     </div>
                 </div>
-                <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.5); border-radius: 0.5rem;">
+                <div class="info-box">
                     <strong>Classes Learned:</strong> {{ model_details.tree.classes|join(', ') }}
                 </div>
             </div>
-            
-            <div style="background: linear-gradient(135deg, rgba(233, 230, 225, 0.5), rgba(233, 230, 225, 0.3)); padding: 1.5rem; border-radius: 1rem;">
-                <h3 style="font-family: 'Lora', serif; color: rgb(33, 29, 30); margin-bottom: 1rem; font-size: 1.1rem;">Polynomial Ridge Regression (sklearn)</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+
+            <div class="model-arch">
+                <h3>Polynomial Ridge Regression (sklearn)</h3>
+                <div class="arch-grid">
                     <div>
-                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Polynomial Degree</div>
-                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.ridge.degree }}</div>
+                        <div class="arch-stat-label">Polynomial Degree</div>
+                        <div class="arch-stat-value">{{ model_details.ridge.degree }}</div>
                     </div>
                     <div>
-                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Alpha (Regularization)</div>
-                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.ridge.alpha }}</div>
+                        <div class="arch-stat-label">Alpha (Regularization)</div>
+                        <div class="arch-stat-value">{{ model_details.ridge.alpha }}</div>
                     </div>
                     <div>
-                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Input Features</div>
-                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.ridge.n_features_in }}</div>
+                        <div class="arch-stat-label">Input Features</div>
+                        <div class="arch-stat-value">{{ model_details.ridge.n_features_in }}</div>
                     </div>
                     <div>
-                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Polynomial Features</div>
-                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.ridge.n_features_out }}</div>
+                        <div class="arch-stat-label">Polynomial Features</div>
+                        <div class="arch-stat-value">{{ model_details.ridge.n_features_out }}</div>
                     </div>
                 </div>
-                <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.5); border-radius: 0.5rem; font-size: 0.9rem;">
+                <div class="info-box">
                     <strong>Note:</strong> Polynomial features expand 6 inputs into {{ model_details.ridge.n_features_out }} features (includes interactions like social_activity × confidence_level)
                 </div>
             </div>
             {% else %}
             <p style="color: rgb(165, 174, 183); text-align: center; padding: 2rem;">Models not trained yet. Click "Retrain Models" to see architecture details.</p>
             {% endif %}
-        </div>
+        </article>
 
-        <div class="card">
-            <h2>🎯 Model Performance (Training Metrics)</h2>
+        <!-- Model Performance -->
+        <article>
+            <header>
+                <h2>🎯 Model Performance (Training Metrics)</h2>
+            </header>
+
             <div class="model-metrics">
                 <div class="metric-card">
                     <h3>Decision Tree Classifier</h3>
                     <div class="metric-value">{{ tree_accuracy }}%</div>
                     <p class="metric-note">Training Accuracy</p>
                     <div class="warning-box">
-                        <p><strong>Note:</strong> 100% means it memorized the data! This is overfitting.</p>
+                        <strong>Note:</strong> 100% means it memorized the data! This is overfitting.
                     </div>
                 </div>
                 <div class="metric-card">
@@ -111,143 +130,152 @@
                     <div class="metric-value">± {{ poly_error }}</div>
                     <p class="metric-note">Training Error (months)</p>
                     <div class="warning-box">
-                        <p><strong>Note:</strong> Lower is better, but too low means overfitting!</p>
+                        <strong>Note:</strong> Lower is better, but too low means overfitting!
                     </div>
                 </div>
             </div>
-        </div>
+        </article>
 
-        <div class="card">
-            <h2>� Polynomial Regression Curve (Visual Proof)</h2>
+        <!-- Polynomial Curve Chart -->
+        <article>
+            <header>
+                <h2>📉 Polynomial Regression Curve (Visual Proof)</h2>
+            </header>
             <p style="color: rgb(165, 174, 183); margin-bottom: 1rem; font-size: 0.95rem;">
-                This chart shows the actual curve learned by the Polynomial Ridge Regression model. 
+                This chart shows the actual curve learned by the Polynomial Ridge Regression model.
                 Notice how it's not a straight line — that's the "polynomial" part working!
             </p>
             {% if polynomial_chart %}
-            <div style="background: white; padding: 1rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-                <img src="data:image/png;base64,{{ polynomial_chart }}" alt="Polynomial Regression Curve" style="width: 100%; height: auto; display: block;">
+            <div class="chart-image-wrapper">
+                <img src="data:image/png;base64,{{ polynomial_chart }}" alt="Polynomial Regression Curve">
             </div>
-            <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.5); border-radius: 0.75rem; font-size: 0.9rem; color: rgb(33, 29, 30);">
-                <strong>🔬 What you're seeing:</strong> Each point on the curve is a real prediction from <code>sklearn.linear_model.Ridge</code>. 
+            <div class="info-box">
+                <strong>🔬 What you're seeing:</strong> Each point on the curve is a real prediction from <code>sklearn.linear_model.Ridge</code>.
                 Other features are held constant (Social=5, Confidence=5, Hobbies=3, GoesOut=3, TalksToNew=5) while screen time varies from 0-16 hours.
             </div>
             {% else %}
             <p style="color: rgb(165, 174, 183); text-align: center; padding: 2rem;">Train models to see the polynomial curve.</p>
             {% endif %}
-        </div>
+        </article>
 
-        <div class="card">
-            <h2>🌳 Decision Tree Structure (Actual Model)</h2>
+        <!-- Decision Tree Chart -->
+        <article>
+            <header>
+                <h2>🌳 Decision Tree Structure (Actual Model)</h2>
+            </header>
             <p style="color: rgb(165, 174, 183); margin-bottom: 1rem; font-size: 0.95rem;">
                 This is the real flowchart sklearn built from your training data. Each box is a decision, and each leaf is a final answer.
             </p>
             {% if tree_chart %}
-            <div style="background: white; padding: 1rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow-x: auto;">
-                <img src="data:image/png;base64,{{ tree_chart }}" alt="Decision Tree Structure" style="width: 100%; height: auto; display: block; min-width: 800px;">
+            <div class="chart-image-wrapper tree">
+                <img src="data:image/png;base64,{{ tree_chart }}" alt="Decision Tree Structure">
             </div>
-            <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.5); border-radius: 0.75rem; font-size: 0.9rem; color: rgb(33, 29, 30);">
+            <div class="info-box">
                 <strong>🔬 How to read it:</strong> Start at the top. Each box asks a yes/no question. Follow the branches based on the answer until you reach a colored leaf — that's the predicted category. Generated using <code>sklearn.tree.plot_tree()</code>.
             </div>
             {% else %}
             <p style="color: rgb(165, 174, 183); text-align: center; padding: 2rem;">Train models to see the tree structure.</p>
             {% endif %}
-        </div>
+        </article>
 
-        <div class="card">
-            <h2>🔥 Feature Interaction Heatmap</h2>
+        <!-- Feature Interaction Heatmap -->
+        <article>
+            <header>
+                <h2>🔥 Feature Interaction Heatmap</h2>
+            </header>
             <p style="color: rgb(165, 174, 183); margin-bottom: 1rem; font-size: 0.95rem;">
                 This shows how TWO features combine to affect predictions. Green = quick love, Red = longer wait.
             </p>
             {% if interaction_chart %}
-            <div style="background: white; padding: 1rem; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-                <img src="data:image/png;base64,{{ interaction_chart }}" alt="Feature Interaction Heatmap" style="width: 100%; height: auto; display: block;">
+            <div class="chart-image-wrapper">
+                <img src="data:image/png;base64,{{ interaction_chart }}" alt="Feature Interaction Heatmap">
             </div>
-            <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.5); border-radius: 0.75rem; font-size: 0.9rem; color: rgb(33, 29, 30);">
-                <strong>🔬 What you're seeing:</strong> The polynomial model captures interactions between features. 
-                High social activity + low screen time (top-left) gives the fastest predictions. 
-                Low social + high screen (bottom-right) gives the slowest. This is why we use <code>PolynomialFeatures(degree=2)</code> — to capture these combined effects!
+            <div class="info-box">
+                <strong>🔬 What you're seeing:</strong> The polynomial model captures interactions between features.
+                High social activity + low screen time gives the fastest predictions. This is why we use <code>PolynomialFeatures(degree=2)</code> — to capture these combined effects!
             </div>
             {% else %}
             <p style="color: rgb(165, 174, 183); text-align: center; padding: 2rem;">Train models to see feature interactions.</p>
             {% endif %}
-        </div>
+        </article>
 
-        <div class="card">
-            <h2>�📈 Feature Importance</h2>
-            <div class="chart-container">
-                <div class="chart-title">Which features matter most?</div>
-                <div class="bar-chart">
-                    {% for feature in feature_importance %}
-                    <div class="bar-item">
-                        <div class="bar-label">{{ feature.label }}</div>
-                        <div class="bar-track">
-                            <div class="bar-fill" style="width: {{ (feature.value * 100)|round|int }}%;">
-                                <span class="bar-value">{{ feature.value }}</span>
-                            </div>
+        <!-- Feature Importance -->
+        <article>
+            <header>
+                <h2>📈 Feature Importance</h2>
+            </header>
+            <p style="color: rgb(165, 174, 183); margin-bottom: 1rem;">Which features matter most?</p>
+
+            <div class="bar-chart">
+                {% for feature in feature_importance %}
+                <div class="bar-item">
+                    <div class="bar-label">{{ feature.label }}</div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width: {{ (feature.value * 100)|round|int }}%;">
+                            <span class="bar-value">{{ feature.value }}</span>
                         </div>
                     </div>
-                    {% endfor %}
                 </div>
+                {% endfor %}
             </div>
-        </div>
+        </article>
 
-        <div class="card">
-            <h2>🎲 Live Model Prediction Example</h2>
-            <div style="background: linear-gradient(135deg, rgba(211, 169, 153, 0.15), rgba(211, 169, 153, 0.25)); padding: 1.25rem; border-radius: 1rem; margin-bottom: 1.5rem;">
-                <p style="color: rgb(33, 29, 30); margin-bottom: 0.5rem;"><strong>Test Input (Average Profile):</strong> Social=5, Confidence=5, Hobbies=3, Screen=6hrs, GoesOut=3x, TalksToNew=5</p>
-                <p style="color: rgb(165, 174, 183); font-size: 0.9rem;">This shows actual Decision Tree probability output with mixed predictions (not hardcoded)</p>
+        <!-- Live Prediction -->
+        <article>
+            <header>
+                <h2>🎲 Live Model Prediction Example</h2>
+            </header>
+
+            <div class="test-input-box">
+                <p style="margin-bottom: 0.5rem;"><strong>Test Input (Average Profile):</strong> Social=5, Confidence=5, Hobbies=3, Screen=6hrs, GoesOut=3x, TalksToNew=5</p>
+                <p style="color: rgb(165, 174, 183); font-size: 0.9rem; margin: 0;">This shows actual Decision Tree probability output with mixed predictions (not hardcoded)</p>
             </div>
-            <div class="chart-container">
-                <div class="chart-title">Decision Tree Probability Distribution</div>
-                <div class="probability-bars">
-                    {% if probabilities %}
-                    {% for category, prob in probabilities.items() %}
-                    <div class="prob-item">
-                        <div class="prob-label">{{ category }}</div>
-                        <div class="prob-track">
-                            <div class="prob-fill" style="width: {{ prob }}%;"></div>
-                        </div>
-                        <div class="prob-value">{{ prob }}%</div>
-                    </div>
-                    {% endfor %}
-                    {% else %}
-                    <p style="color: rgb(165, 174, 183); text-align: center;">Train models to see live predictions</p>
-                    {% endif %}
+
+            <p style="color: rgb(33, 29, 30); margin-bottom: 1rem; font-weight: 600;">Decision Tree Probability Distribution</p>
+
+            {% if probabilities %}
+            {% for category, prob in probabilities.items() %}
+            <div class="prob-item">
+                <div class="prob-label">{{ category }}</div>
+                <div class="prob-track">
+                    <div class="prob-fill" style="width: {{ prob }}%;"></div>
                 </div>
+                <div class="prob-value">{{ prob }}%</div>
             </div>
-            <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.5); border-radius: 0.75rem; font-size: 0.9rem; color: rgb(33, 29, 30);">
-                <strong>🔬 ML Proof:</strong> These probabilities come from <code>sklearn.tree.DecisionTreeClassifier.predict_proba()</code> - calculated in real-time from the trained model, not hardcoded values.
-            </div>
-        </div>
+            {% endfor %}
+            {% else %}
+            <p style="color: rgb(165, 174, 183); text-align: center;">Train models to see live predictions</p>
+            {% endif %}
 
-        <div class="nav-link">
+            <div class="info-box">
+                <strong>🔬 ML Proof:</strong> These probabilities come from <code>sklearn.tree.DecisionTreeClassifier.predict_proba()</code> — calculated in real-time from the trained model, not hardcoded values.
+            </div>
+        </article>
+
+        <nav class="nav-link">
             <a href="{{ url_for('index') }}">← Back to Prediction</a>
-        </div>
-    </div>
+        </nav>
+    </main>
 
     <script>
         function retrainModels() {
-            const button = document.querySelector('button');
+            const button = document.querySelector('button.retrain-btn');
             const message = document.getElementById('retrain-message');
-            
+
             button.disabled = true;
             button.textContent = '⏳ Training...';
             message.textContent = '';
-            
+
             fetch('/retrain', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                headers: { 'Content-Type': 'application/json' }
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     message.style.color = 'rgb(211, 169, 153)';
                     message.textContent = '✓ ' + data.message;
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
+                    setTimeout(() => location.reload(), 1500);
                 } else {
                     message.style.color = 'rgb(211, 169, 153)';
                     message.textContent = '✗ ' + data.message;
