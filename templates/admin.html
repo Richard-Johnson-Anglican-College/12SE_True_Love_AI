@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 Admin Dashboard - True Love AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container-wide">
+        <h1>🧠 Admin Dashboard</h1>
+        <p class="subtitle">Model Lab & Training Metrics</p>
+
+        <div class="card">
+            <h2>📊 Dataset Summary</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Total Records</div>
+                    <div class="stat-value">{{ record_count }}</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Last Trained</div>
+                    <div class="stat-value stat-unit">{{ last_trained }}</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Features</div>
+                    <div class="stat-value">6</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Model Status</div>
+                    <div class="stat-value stat-unit">{% if tree_accuracy > 0 %}✓ Ready{% else %}⚠ Not Trained{% endif %}</div>
+                </div>
+            </div>
+            <button onclick="retrainModels()">🔄 Retrain Models</button>
+            <div id="retrain-message" style="margin-top: 1rem; text-align: center; font-weight: 500;"></div>
+        </div>
+
+        <div class="card">
+            <h2>🤖 ML Model Architecture (Proof of Real ML)</h2>
+            {% if model_details %}
+            <div style="background: linear-gradient(135deg, rgba(233, 230, 225, 0.5), rgba(233, 230, 225, 0.3)); padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem;">
+                <h3 style="font-family: 'Lora', serif; color: rgb(33, 29, 30); margin-bottom: 1rem; font-size: 1.1rem;">Decision Tree Classifier (sklearn)</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div>
+                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Max Depth</div>
+                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.tree.max_depth }}</div>
+                    </div>
+                    <div>
+                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Min Samples/Leaf</div>
+                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.tree.min_samples_leaf }}</div>
+                    </div>
+                    <div>
+                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Tree Nodes</div>
+                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.tree.n_nodes }}</div>
+                    </div>
+                    <div>
+                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Leaf Nodes</div>
+                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.tree.n_leaves }}</div>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.5); border-radius: 0.5rem;">
+                    <strong>Classes Learned:</strong> {{ model_details.tree.classes|join(', ') }}
+                </div>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, rgba(233, 230, 225, 0.5), rgba(233, 230, 225, 0.3)); padding: 1.5rem; border-radius: 1rem;">
+                <h3 style="font-family: 'Lora', serif; color: rgb(33, 29, 30); margin-bottom: 1rem; font-size: 1.1rem;">Polynomial Ridge Regression (sklearn)</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div>
+                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Polynomial Degree</div>
+                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.ridge.degree }}</div>
+                    </div>
+                    <div>
+                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Alpha (Regularization)</div>
+                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.ridge.alpha }}</div>
+                    </div>
+                    <div>
+                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Input Features</div>
+                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.ridge.n_features_in }}</div>
+                    </div>
+                    <div>
+                        <div style="color: rgb(165, 174, 183); font-size: 0.85rem;">Polynomial Features</div>
+                        <div style="color: rgb(211, 169, 153); font-weight: 600; font-size: 1.2rem;">{{ model_details.ridge.n_features_out }}</div>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.5); border-radius: 0.5rem; font-size: 0.9rem;">
+                    <strong>Note:</strong> Polynomial features expand 6 inputs into {{ model_details.ridge.n_features_out }} features (includes interactions like social_activity × confidence_level)
+                </div>
+            </div>
+            {% else %}
+            <p style="color: rgb(165, 174, 183); text-align: center; padding: 2rem;">Models not trained yet. Click "Retrain Models" to see architecture details.</p>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <h2>🎯 Model Performance (Training Metrics)</h2>
+            <div class="model-metrics">
+                <div class="metric-card">
+                    <h3>Decision Tree Classifier</h3>
+                    <div class="metric-value">{{ tree_accuracy }}%</div>
+                    <p class="metric-note">Training Accuracy</p>
+                    <div class="warning-box">
+                        <p><strong>Note:</strong> 100% means it memorized the data! This is overfitting.</p>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <h3>Polynomial Ridge Regression</h3>
+                    <div class="metric-value">± {{ poly_error }}</div>
+                    <p class="metric-note">Training Error (months)</p>
+                    <div class="warning-box">
+                        <p><strong>Note:</strong> Lower is better, but too low means overfitting!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📈 Feature Importance</h2>
+            <div class="chart-container">
+                <div class="chart-title">Which features matter most?</div>
+                <div class="bar-chart">
+                    {% for feature in feature_importance %}
+                    <div class="bar-item">
+                        <div class="bar-label">{{ feature.label }}</div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: {{ (feature.value * 100)|round|int }}%;">
+                                <span class="bar-value">{{ feature.value }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🎲 Live Model Prediction Example</h2>
+            <div style="background: linear-gradient(135deg, rgba(211, 169, 153, 0.15), rgba(211, 169, 153, 0.25)); padding: 1.25rem; border-radius: 1rem; margin-bottom: 1.5rem;">
+                <p style="color: rgb(33, 29, 30); margin-bottom: 0.5rem;"><strong>Test Input (Average Profile):</strong> Social=5, Confidence=5, Hobbies=3, Screen=6hrs, GoesOut=3x, TalksToNew=5</p>
+                <p style="color: rgb(165, 174, 183); font-size: 0.9rem;">This shows actual Decision Tree probability output with mixed predictions (not hardcoded)</p>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Decision Tree Probability Distribution</div>
+                <div class="probability-bars">
+                    {% if probabilities %}
+                    {% for category, prob in probabilities.items() %}
+                    <div class="prob-item">
+                        <div class="prob-label">{{ category }}</div>
+                        <div class="prob-track">
+                            <div class="prob-fill" style="width: {{ prob }}%;"></div>
+                        </div>
+                        <div class="prob-value">{{ prob }}%</div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p style="color: rgb(165, 174, 183); text-align: center;">Train models to see live predictions</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div style="margin-top: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.5); border-radius: 0.75rem; font-size: 0.9rem; color: rgb(33, 29, 30);">
+                <strong>🔬 ML Proof:</strong> These probabilities come from <code>sklearn.tree.DecisionTreeClassifier.predict_proba()</code> - calculated in real-time from the trained model, not hardcoded values.
+            </div>
+        </div>
+
+        <div class="nav-link">
+            <a href="{{ url_for('index') }}">← Back to Prediction</a>
+        </div>
+    </div>
+
+    <script>
+        function retrainModels() {
+            const button = document.querySelector('button');
+            const message = document.getElementById('retrain-message');
+            
+            button.disabled = true;
+            button.textContent = '⏳ Training...';
+            message.textContent = '';
+            
+            fetch('/retrain', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    message.style.color = 'rgb(211, 169, 153)';
+                    message.textContent = '✓ ' + data.message;
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    message.style.color = 'rgb(211, 169, 153)';
+                    message.textContent = '✗ ' + data.message;
+                    button.disabled = false;
+                    button.textContent = '🔄 Retrain Models';
+                }
+            })
+            .catch(error => {
+                message.style.color = 'rgb(211, 169, 153)';
+                message.textContent = '✗ Error: ' + error.message;
+                button.disabled = false;
+                button.textContent = '🔄 Retrain Models';
+            });
+        }
+    </script>
+</body>
+</html>
