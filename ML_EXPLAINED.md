@@ -230,6 +230,8 @@ When we hold all other features constant and vary only hobbies, the Polynomial m
 - **Decision Trees** use *hard splits* (e.g., "is hobbies > 5?"). If no single threshold cleanly separates the data, hobbies gets ignored.
 - **Polynomial Ridge** uses *smooth curves* and creates **28 features** from 6 inputs — including interactions like `hobbies × confidence` and `hobbies²`. This captures subtle effects.
 
+**Plain-English interpretation:** In this trained tree, on this dataset and with this depth/leaf configuration, `hobbies` never produced a strong enough hard split to be selected. So tree importance becomes `0%` — which means "not chosen by this tree," not "useless in real life."
+
 ### 🎓 Teaching Moment
 
 **"0% importance ≠ no impact!"**

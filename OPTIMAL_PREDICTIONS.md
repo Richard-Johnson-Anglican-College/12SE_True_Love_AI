@@ -120,6 +120,8 @@ All top-performing combinations share:
 5. **Social Activity:** 0.08 (8% weight)
 6. **Hobbies Count:** 0.00 (minimal direct weight, but affects interactions)
 
+**Interpretation note:** In the Decision Tree, `hobbies_count = 0.00` means hobbies did not create a strong enough **hard split** to be selected in that tree structure. It does **not** mean hobbies never matter — the Polynomial Ridge model still uses hobbies through curved terms and interactions (e.g., `hobbies²`, `hobbies × confidence`).
+
 ---
 
 ## 💡 How to Optimize Your Score
