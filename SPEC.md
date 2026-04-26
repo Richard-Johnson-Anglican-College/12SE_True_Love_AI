@@ -10,14 +10,18 @@ This specification has been completely implemented with additional features beyo
 - ✅ Flask web application with all routes
 - ✅ Decision Tree Classifier (max_depth=4, min_samples_leaf=3)
 - ✅ Polynomial Ridge Regression (degree=2, alpha=1.5)
+- ✅ Gemma neural network narration stage (`gemma-3n-e4b-it` via Gemini API)
 - ✅ CSV-based data storage (simplified from SQLite)
 - ✅ Model persistence with pickle
 - ✅ Admin dashboard with metrics and visualizations
 - ✅ Prediction interface with explanations
 
 ### Enhancements Beyond Spec
+- ✅ **Hybrid AI Chaining** - 3-stage pipeline: classical ML outputs feed a neural network narrator
+- ✅ **On-Demand AI Narrator** - Sparkle-triggered Stage 3 response with witty/sarcastic tone
 - ✅ **ML Transparency Features** - Admin dashboard shows actual sklearn model parameters
 - ✅ **Visual ML Charts** - Polynomial curve, decision tree diagram, feature interaction heatmap (matplotlib)
+- ✅ **Hybrid Admin Teaching Layer** - Pipeline diagram, chain demo, comparison table, prompt inspector
 - ✅ **Enhanced Explanations** - Detailed, ML-driven reasoning with categorized feedback
 - ✅ **Input Validation** - Server-side range checking with warnings
 - ✅ **Typography Improvements** - Enhanced visual hierarchy and readability
@@ -25,11 +29,6 @@ This specification has been completely implemented with additional features beyo
 - ✅ **Research-Backed Features** - Academic citations linking features to relationship psychology
 - ✅ **Optimization Tools** - Scripts to find optimal input combinations
 - ✅ **Data Quality Analysis** - Automated testing and validation tools
-
-### Architecture Changes
-- **Simplified to CSV-only** (removed SQLite dependency for easier classroom use)
-- **Direct CSV editing** workflow (edit data.csv → retrain → updated predictions)
-- **Balanced dataset** (80 records with improved class distribution)
 
 ---
 
@@ -39,9 +38,15 @@ This is the smart play. Using **Option B (Ridge)** future-proofs the app in case
 
 ## 1. 🎯 Project Overview
 * **App Name:** When Will I Find True Love?
-* **Tech Stack:** Flask (Python), Pandas, Scikit-Learn, CSV data storage
-* **Core Idea:** A playful ML app predicting when someone will find "true love" based on lifestyle data, using both Classification and Regression.
-* **Architecture:** CSV-only (no database required) for simplicity and transparency
+* **Tech Stack:** Flask (Python), Pandas, Scikit-Learn, Gemini API (Gemma), CSV data storage
+* **Core Idea:** A playful hybrid AI app predicting when someone will find "true love" using chained stages.
+* **Architecture:** Hybrid 3-stage chaining over CSV-only data (no database required)
+
+### Hybrid Chaining Architecture
+
+1. **Stage 1 (Classical ML):** Decision Tree Classifier → `category`
+2. **Stage 2 (Classical ML):** Polynomial Ridge Regression → `months`
+3. **Stage 3 (Neural Network):** Gemma LLM narrator consumes Stage 1 + Stage 2 + raw features → witty narrative
 
 ---
 
@@ -50,7 +55,7 @@ This is the smart play. Using **Option B (Ridge)** future-proofs the app in case
 
 ---
 
-## 3. � Data Structure (CSV Format)
+## 3. 📊 Data Structure (CSV Format)
 
 CSV file: `data.csv`
 
@@ -96,15 +101,25 @@ poly_model = make_pipeline(
 )
 ```
 
+**Model 3: Gemma Neural Network Narrator (Stage 3)**
+*Chained onto classical outputs; transforms numeric predictions into natural language explanation.*
+
+- Model: `gemma-3n-e4b-it`
+- Access: Gemini API
+- Prompt pattern: `ROLE / CONTEXT / TASK / INPUT`
+- Input includes Stage 1+2 outputs plus the six raw features
+- Output contract: JSON with key `narrative`
+
 ---
 
-## 5. 🔄 Simplified App Flow (CSV-Only)
-*CSV provides a tangible file students can open and inspect in Excel or text editor.*
+## 5. 🔄 Simplified App Flow (CSV + Hybrid Chaining)
+*CSV provides a tangible file students can open and inspect; chaining shows model-family collaboration.*
 
 1. **Data Editing:** Users edit `data.csv` directly (add/modify/delete records)
 2. **Retrain:** Click "Retrain Models" button in admin dashboard
 3. **Train:** Pandas reads `data.csv`. Models `fit()` on fresh data. Saves to `models.pkl`
-4. **Predict:** Enter new data → models output Category + Months with detailed explanations
+4. **Predict (Stages 1+2):** Enter new data → models output Category + Months with detailed explanations
+5. **Narrate (Stage 3, on-demand):** User clicks sparkle icon → `/ai_narrate` sends chained payload to Gemma → receives witty narrative
 
 **Benefits:**
 - No database setup required
@@ -145,6 +160,10 @@ Timeline Prediction: Polynomial Ridge Regression calculated 2.1 months based on 
 ## 7. 🧠 Admin Dashboard (Model Lab with ML Transparency)
 *Demonstrates real ML with actual sklearn model parameters*
 
+**Hybrid System Overview** ⭐ NEW
+* Top-of-page 3-stage pipeline diagram (Stage 1 → Stage 2 → Stage 3)
+* Explicit chaining handoff explanation (`category` + `months` injected into Stage 3 prompt)
+
 **Dataset Summary**
 * Records: 80 (from CSV)
 * Last trained: *timestamp*
@@ -164,6 +183,23 @@ Timeline Prediction: Polynomial Ridge Regression calculated 2.1 months based on 
   - Alpha (Regularization): 1.5
   - Input Features: 6
   - Polynomial Features: 28 (includes interactions)
+* **Gemma Neural Network (Gemini API):**
+  - Model ID: `gemma-3n-e4b-it`
+  - Architecture: Transformer (decoder-only)
+  - Role in chain: Converts Stage 1+2 outputs into natural-language narrative
+  - Runtime status shown in dashboard (`ai_available`)
+
+**Chain in Action Demo** ⭐ NEW
+* Shows sample input and Stage 1+2 outputs
+* "Run the Full Chain" button triggers live Stage 3 call
+* Displays end-to-end hybrid output in one panel
+
+**Classical ML vs Neural Network Comparison Table** ⭐ NEW
+* Side-by-side teaching comparison of architecture, training mode, output type, determinism, and compute runtime
+
+**Stage 3 Prompt Inspector** ⭐ NEW
+* Collapsible panel showing the actual chained prompt sent to Gemma
+* Makes prompt engineering transparent for students
 
 **Live Model Prediction Example** ⭐ NEW
 * Sample input with actual probability distribution
@@ -212,7 +248,9 @@ Timeline Prediction: Polynomial Ridge Regression calculated 2.1 months based on 
 true-love-app/
 ├── app.py              # Flask Routes
 ├── ml_engine.py        # Ridge & Tree Logic
-├── seed_data.py        # Script to generate initial 50 rows
+├── ai_narrator.py      # Stage 3 Gemma prompt + API caller
+├── config.example.py   # Template for GEMINI_API_KEY
+├── seed_data.py        # Script to generate initial rows
 ├── data.csv            # Exported flat-file for training
 ├── static/css/style.css
 └── templates/
