@@ -257,24 +257,60 @@ Then reload. Done.
 
 ### 🚀 One-Liner for Future Updates
 
-You can do everything in one command on PythonAnywhere Bash:
+Your magic deployment command — run this on PythonAnywhere Bash after every `git push`:
 
 ```bash
 cd ~/12SE_True_Love_AI && git pull && touch /var/www/trueloveai_pythonanywhere_com_wsgi.py
 ```
 
-Save this as a reminder! 🎯
+#### **What each part does**
+
+| Part | What It Does |
+|------|--------------|
+| `cd ~/12SE_True_Love_AI` | Navigate to your project folder |
+| `&&` | Only run next command if previous succeeded |
+| `git pull` | Download latest commits from GitHub |
+| `&&` | Only reload if pull succeeded (smart!) |
+| `touch /var/www/...wsgi.py` | Trigger PythonAnywhere to reload your app |
+
+The `&&` chaining is clever — if `git pull` fails (e.g. merge conflict), it **won't** reload a broken state.
+
+#### **Exception: when `requirements.txt` changes**
+
+If you added/removed packages locally, add a `pip install` step:
+
+```bash
+cd ~/12SE_True_Love_AI && git pull && pip install --user -r requirements.txt && touch /var/www/trueloveai_pythonanywhere_com_wsgi.py
+```
+
+#### **💡 Pro Tip: Make It a Bash Alias**
+
+Tired of typing the long command? Set up a `deploy` alias once:
+
+```bash
+echo "alias deploy='cd ~/12SE_True_Love_AI && git pull && touch /var/www/trueloveai_pythonanywhere_com_wsgi.py'" >> ~/.bashrc
+source ~/.bashrc
+```
+
+Then in any future bash console, just type:
+
+```bash
+deploy
+```
+
+Done. ⚡ Saves seconds every deploy.
 
 ---
 
 ### 📝 Update Action Cheat Sheet
 
-| What Changed | Action Needed |
-|--------------|---------------|
-| HTML/CSS/Python code | `git pull` + reload |
-| `requirements.txt` | `git pull` + `pip install` + reload |
-| `models.pkl` | `git pull` + reload, OR click retrain button |
-| `data.csv` | `git pull` + retrain models |
+| Scenario | Command |
+|----------|---------|
+| **Code/HTML/CSS change** | `cd ~/12SE_True_Love_AI && git pull && touch /var/www/trueloveai_pythonanywhere_com_wsgi.py` |
+| **Added a new package** | Same as above + `pip install --user -r requirements.txt` between pull and touch |
+| **Changed `data.csv`** | Run deploy command, then click "🔄 Retrain Models" on `/admin` |
+| **Updated `models.pkl` locally** | Run deploy command (pickle is in repo) |
+| **Changed `config.py` (API key only)** | Just `touch /var/www/trueloveai_pythonanywhere_com_wsgi.py` — no `git pull` needed (config.py is local-only) |
 
 ---
 
