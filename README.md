@@ -174,6 +174,20 @@ Visit `http://localhost:5000` in your browser.
 ## 🔧 Admin Features
 
 - **Dataset Summary:** Record count from CSV, last training time, feature count
+- **Hybrid Chain Visual Overview:** ⭐ NEW
+  - Stage 1 → Stage 2 → Stage 3 pipeline diagram at top of admin page
+  - Explicitly shows the chaining handoff into the Gemma neural network
+- **Stage 3 Neural Network Architecture Card:** ⭐ NEW
+  - Gemma model details (`gemma-3n-e4b-it`), transformer architecture, status check
+  - Explains why this creates a hybrid system (classical ML + neural network)
+- **Chain in Action Demo:** ⭐ NEW
+  - Live panel showing how Stage 1 category + Stage 2 months are chained into Stage 3
+  - "Run the Full Chain" button triggers `/ai_narrate` for a real end-to-end demo
+- **Classical ML vs Neural Network Comparison Table:** ⭐ NEW
+  - Side-by-side teaching table of architecture, training, outputs, determinism, and cost model
+- **Stage 3 Prompt Inspector:** ⭐ NEW
+  - Collapsible viewer for the actual ROLE/CONTEXT/TASK/INPUT prompt
+  - Shows exactly where chained Stage 1+2 outputs are injected
 - **ML Model Architecture Display:** ⭐ NEW
   - Decision Tree: max_depth, min_samples_leaf, node count, leaf count, learned classes
   - Polynomial Ridge: degree, alpha, feature expansion (6→28)

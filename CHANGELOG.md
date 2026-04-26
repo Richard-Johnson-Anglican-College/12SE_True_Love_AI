@@ -4,6 +4,53 @@ All notable changes to the "When Will I Find True Love?" project will be documen
 
 ---
 
+## [2026-04-26] - Admin Dashboard: Hybrid Chain Visual Teaching Layer
+
+### Added
+- **Full hybrid system visualization in `admin.html`**
+  - New top-of-page pipeline diagram showing 3-stage chaining:
+    - Stage 1: Decision Tree (classical ML)
+    - Stage 2: Polynomial Ridge (classical ML)
+    - Stage 3: Gemma LLM (neural network)
+  - Chaining handoff explanation card clarifying how Stage 1+2 outputs feed Stage 3
+
+- **Stage 3 neural network architecture card**
+  - Gemma model details (`gemma-3n-e4b-it`), transformer type, and status indicator
+  - Explicit hybrid framing (classical ML + neural network)
+
+- **"Chain in Action" live demo panel**
+  - Displays sample input and Stage 1/2 outputs
+  - Added interactive button to run Stage 3 via `/ai_narrate`
+  - Shows end-to-end hybrid chaining in one panel
+
+- **Classical ML vs Neural Network comparison table**
+  - Side-by-side teaching matrix: architecture, training, output type, determinism, runtime, and cost model
+
+- **Stage 3 prompt inspector**
+  - Collapsible panel showing the actual ROLE/CONTEXT/TASK/INPUT prompt
+  - Demonstrates exactly where chained Stage 1+2 outputs are injected
+
+### Fixed
+- **Admin chain demo JavaScript payload serialization**
+  - Replaced invalid inline Jinja/JS object spread with a JSON data-island approach
+  - Fixed syntax/lint errors and made payload parsing robust
+
+### Styling
+- Added extensive CSS for all hybrid admin modules:
+  - Pipeline stages/arrows
+  - Stage tags and status indicators
+  - Chain flow cards and run button
+  - Comparison table visuals
+  - Prompt inspector preview block
+
+### Files Modified
+- `app.py` (admin context values for chain demo/prompt inspector)
+- `templates/admin.html` (new hybrid sections + chain demo JS)
+- `static/css/style.css` (hybrid admin styling)
+- `README.md` (admin feature documentation updates)
+
+---
+
 ## [2026-04-25] - UI Test Phase
 
 ### Added
