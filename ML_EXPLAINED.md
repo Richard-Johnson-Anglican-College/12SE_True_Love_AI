@@ -6,12 +6,23 @@ A simple, jargon-free explanation of the ML models powering "When Will I Find Tr
 
 ## 🎯 The Big Picture
 
-This app uses **two different AI models** working together:
+This app uses a **hybrid AI system** with **three chained models**:
 
 1. **Decision Tree** - Decides the category (Very Soon, Soon, Eventually, Keep Trying)
 2. **Polynomial Ridge Regression** - Calculates the exact number of months
+3. **Gemma Neural Network (LLM)** - Turns the ML output into a witty natural-language narrative
 
-Think of it like asking two experts: one gives you a general answer, the other gives you a specific number.
+Think of it like asking three experts in sequence: one gives a category, one gives a number, and one explains it like a human.
+
+### 🔗 Chaining Flow
+
+```text
+Stage 1 (Classical ML): Decision Tree           -> category
+Stage 2 (Classical ML): Polynomial Ridge        -> months
+Stage 3 (Neural Network): Gemma (Gemini API)    -> narrative
+```
+
+The key idea is **chaining**: Stage 1 + Stage 2 outputs are injected into the Stage 3 prompt.
 
 ---
 
@@ -142,6 +153,39 @@ Ridge = **Regularization** = Prevents the model from being too confident.
 - Model predicts: "10 social = 1.1 months" (more realistic)
 
 It adds a "penalty" for extreme predictions, keeping results sensible.
+
+---
+
+## 🧠 Model 3: Gemma Neural Network Narrator (Stage 3)
+
+### What It Does
+Converts the structured ML output into a readable explanation with personality.
+
+### Why We Need It
+- Stage 1 + 2 are great at numbers and categories
+- But they do not write natural language
+- Stage 3 (Gemma) bridges that gap
+
+### How It Is Chained
+
+The app builds a prompt using a structured template:
+- `ROLE`
+- `CONTEXT`
+- `TASK`
+- `INPUT`
+
+Inside `INPUT`, it includes:
+- Predicted category (from Decision Tree)
+- Predicted months (from Polynomial Ridge)
+- Original 6 user features
+
+So Stage 3 is not guessing blindly; it is reasoning over the upstream ML outputs.
+
+### Runtime Notes (Classroom-Friendly)
+- Model: `gemma-3n-e4b-it`
+- Accessed via Gemini API
+- On-demand (sparkle button), not auto-run
+- If API key is missing, app degrades gracefully with a friendly message
 
 ---
 
@@ -323,7 +367,7 @@ months = 20.5
 
 ---
 
-## 🎯 Why Use Two Models?
+## 🎯 Why Use a 3-Stage Hybrid System?
 
 ### Decision Tree Strengths
 ✅ Easy to understand (flowchart logic)
@@ -347,9 +391,22 @@ months = 20.5
 ❌ Can't explain "why" in simple terms
 ❌ Requires numerical targets (not categories)
 
-### Together They're Perfect!
-- Tree explains **WHY** (category + reasoning)
-- Ridge predicts **WHEN** (exact timeline)
+### Gemma Stage 3 Strengths
+✅ Explains outputs in plain language
+✅ Improves engagement and readability
+✅ Can reference multiple input features naturally
+
+### Gemma Stage 3 Weaknesses
+❌ Not deterministic (wording varies)
+❌ Depends on API availability and quota
+❌ Should not replace numeric models for core prediction math
+
+### Together They're Better
+- Stage 1 predicts **WHAT bucket** (category)
+- Stage 2 predicts **WHEN** (exact timeline)
+- Stage 3 explains **SO WHAT** (human-readable narrative)
+
+That combination is why this project is a **hybrid system**.
 
 ---
 
@@ -441,7 +498,14 @@ This app is **intentionally designed** to show overfitting:
 2. Compare category (tree) vs. months (ridge)
 3. Discuss: Why do we need both?
 
-### Activity 4: Edge Case Testing
+### Activity 4: Chain Inspection Lab
+1. Open the admin dashboard pipeline diagram
+2. Run "Chain in Action" to execute Stage 1 → Stage 2 → Stage 3
+3. Expand the Prompt Inspector
+4. Highlight where `category` and `months` are chained into Stage 3
+5. Discuss: Which part is deterministic vs. generative?
+
+### Activity 5: Edge Case Testing
 1. Input all 10s → What happens?
 2. Input all 1s → What happens?
 3. Input realistic values → Compare results
@@ -463,6 +527,11 @@ This app is **intentionally designed** to show overfitting:
 | **Regularization** | Preventing overconfidence | Ridge penalty keeps predictions realistic |
 | **Feature Importance** | Which inputs matter most | Screen time = 43%, hobbies = 0% |
 | **Polynomial** | Curved relationship | social² captures "more is better, but diminishing returns" |
+| **Hybrid System** | Combining model families | Classical ML + neural network in one app |
+| **Chaining** | Passing one model's output into another | category + months injected into LLM prompt |
+| **Neural Network (LLM)** | A language model with many parameters | Gemma writes the narrative explanation |
+| **Transformer** | Neural architecture used by modern LLMs | Gemma is a decoder-only transformer |
+| **Prompt Engineering** | Structuring instructions for an LLM | ROLE/CONTEXT/TASK/INPUT |
 
 ---
 
@@ -477,6 +546,9 @@ After using this app, students should understand:
 5. ✅ **Models have limitations** (prediction floor/ceiling)
 6. ✅ **Context matters** (hobbies alone ≠ important, but hobbies × social = important)
 7. ✅ **Real ML requires validation** (train/test splits)
+8. ✅ **Hybrid architecture benefits** (classical ML + neural network)
+9. ✅ **Chaining mechanics** (Stage 1+2 outputs become Stage 3 inputs)
+10. ✅ **Deterministic vs generative behavior** (stable math vs variable language)
 
 ---
 
