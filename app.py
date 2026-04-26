@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 from ml_engine import TrueLovePredictor, explain
+import ai_narrator
 import os
 import io
 import base64
@@ -235,11 +236,41 @@ def predict():
                              prediction=prediction,
                              reasons=reasons,
                              form_data=data,
+                             ai_available=ai_narrator.is_available(),
                              validation_warnings=validation_errors if validation_errors else None)
     
     except Exception as e:
         return render_template('index.html', 
                              error=f"Prediction error: {str(e)}")
+
+
+@app.route('/ai_narrate', methods=['POST'])
+def ai_narrate():
+    """Generate a playful AI narrative for a prediction (on-demand)."""
+    try:
+        payload = request.get_json(silent=True) or {}
+
+        # Validate required fields
+        required = ['category', 'months', 'social_activity', 'confidence_level',
+                    'hobbies_count', 'screen_time', 'goes_out_per_week',
+                    'talks_to_new_people']
+        for field in required:
+            if field not in payload:
+                return jsonify({
+                    'success': False,
+                    'message': f'Missing field: {field}'
+                })
+
+        result = ai_narrator.generate_narrative(payload)
+        return jsonify(result)
+
+    except Exception as e:
+        print(f"[/ai_narrate] Error: {e}")
+        return jsonify({
+            'success': False,
+            'message': ai_narrator.FRIENDLY_FAILURE_MESSAGE
+        })
+
 
 @app.route('/admin')
 def admin():

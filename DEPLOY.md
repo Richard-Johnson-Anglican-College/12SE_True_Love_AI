@@ -119,6 +119,42 @@ from app import app as application
 
 5. Click **"Save"** (top right)
 
+### **Step 7b: Set Up Gemini API Key (for AI Narrator)** 🤖
+
+The AI Narrator feature uses Google's Gemini API. You need to add your API key to a `config.py` file (which is intentionally **gitignored** so it never reaches GitHub).
+
+#### **Get a free Gemini API key**
+1. Visit https://aistudio.google.com/app/apikey
+2. Click **"Create API key"**
+3. Copy the key (starts with `AI...`)
+
+#### **Create `config.py` on PythonAnywhere**
+
+In the Bash console:
+
+```bash
+cd ~/12SE_True_Love_AI
+nano config.py
+```
+
+Paste this (replace with your actual key):
+
+```python
+GEMINI_API_KEY = "AI...your-real-key-here..."
+```
+
+Save and exit: `Ctrl+O`, `Enter`, `Ctrl+X`.
+
+#### **Verify**
+
+```bash
+python -c "import ai_narrator; print('AI Narrator available:', ai_narrator.is_available())"
+```
+
+Should print: `AI Narrator available: True`
+
+> **🛡️ Graceful degradation:** If you skip this step, the app still works perfectly — the sparkle icon just won't appear on predictions. You can add the key later anytime.
+
 ### **Step 8: Configure Static Files**
 
 This makes CSS and other static files load fast.

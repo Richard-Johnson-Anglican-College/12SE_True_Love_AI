@@ -222,6 +222,67 @@ All notable changes to the "When Will I Find True Love?" project will be documen
 
 ---
 
+## [2026-04-26] - AI Narrator (Gemini-powered Explanations)
+
+### Added
+- **Hybrid ML + GenAI Architecture**
+  - Added Google Gemini integration via `google-generativeai==0.8.3`
+  - Uses `gemma-3n-e4b-it` model (proven from RJ_BLP_1)
+  - On-demand AI-generated 4-5 sentence narrative explanations
+  - Click the floating ✨ sparkle icon (top-right of prediction card) to invoke
+
+- **`ai_narrator.py` module**
+  - Implements proven ROLE / CONTEXT / TASK / INPUT prompt pattern
+  - Builds structured prompts using ML prediction + user input data
+  - Robust JSON parsing (strips markdown fences)
+  - Graceful degradation if API key missing
+
+- **`/ai_narrate` POST endpoint**
+  - Accepts JSON payload with prediction + form data
+  - Returns `{success, narrative}` or `{success, message}` on failure
+  - Never returns 500 — all errors handled gracefully
+
+- **Sparkle icon UI**
+  - Pulsing animation to invite curiosity
+  - Hover effect (scale + rotate)
+  - Loading spin animation while fetching
+  - Hides after successful response (one-shot per prediction)
+
+- **AI Narrator response card**
+  - Glassmorphism styling matching brand
+  - Italic narrative body with serif title
+  - "Powered by Gemini AI" attribution footer
+  - Fade-in animation on appear
+
+### Files Added
+- `ai_narrator.py` — Gemini integration module
+- `config.example.py` — template for API key (gitignored)
+- `AI_BUILD.md` — design + implementation plan
+
+### Files Modified
+- `requirements.txt` — added `google-generativeai==0.8.3`
+- `.gitignore` — added `config.py` to prevent key leakage
+- `app.py` — imported `ai_narrator`, added `/ai_narrate` route, pass `ai_available` flag to template
+- `templates/index.html` — added sparkle button + narrator section + AJAX JS
+- `static/css/style.css` — added ~120 lines for sparkle button & narrator card styling
+- `DEPLOY.md` — added API key setup section (Step 7b)
+
+### Educational Value
+- Demonstrates **hybrid AI architecture**: classical ML (sklearn) + GenAI (Gemini)
+- Shows **prompt engineering** with structured ROLE / CONTEXT / TASK / INPUT
+- Teaches **API integration** in Flask
+- Models **graceful degradation** patterns
+- Demonstrates **secrets management** via gitignored `config.py`
+- Shows **on-demand async UX** vs blocking renders
+
+### Security
+- API key stored in `config.py` (gitignored, never committed)
+- Manual setup on PythonAnywhere via `nano config.py` (one time)
+- Server logs warning if key missing but never crashes
+- App works perfectly without AI key (sparkle icon just hidden)
+
+---
+
 ## [2026-04-25] - Pico CSS Migration (Mobile-First Redesign)
 
 ### Added

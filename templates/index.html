@@ -92,6 +92,16 @@
 
         {% if prediction %}
         <article class="prediction-result">
+            {% if ai_available %}
+            <button type="button"
+                    class="ai-sparkle-btn"
+                    id="ai-sparkle-btn"
+                    title="Ask the AI Narrator to explain your result"
+                    aria-label="Ask AI Narrator">
+                ✨
+            </button>
+            {% endif %}
+
             <div class="prediction-category">✨ {{ prediction.category }} ✨</div>
             <div class="prediction-months">Estimated: {{ prediction.months }} months</div>
 
@@ -109,6 +119,32 @@
                     {% endfor %}
                 </ul>
             </div>
+
+            {% if ai_available %}
+            <div class="ai-narrator" id="ai-narrator" hidden>
+                <div class="ai-narrator-header">
+                    <span class="ai-narrator-title">💭 AI Narrator says:</span>
+                </div>
+                <div class="ai-narrator-body" id="ai-narrator-body">
+                    <span class="ai-narrator-loading">⏳ Thinking…</span>
+                </div>
+                <div class="ai-narrator-footer">ℹ️ Powered by Gemini AI</div>
+            </div>
+
+            <!-- Hidden data island for the JS to read prediction values -->
+            <script type="application/json" id="ai-prediction-data">
+                {
+                    "category": "{{ prediction.category }}",
+                    "months": {{ prediction.months }},
+                    "social_activity": {{ form_data.social_activity }},
+                    "confidence_level": {{ form_data.confidence_level }},
+                    "hobbies_count": {{ form_data.hobbies_count }},
+                    "screen_time": {{ form_data.screen_time }},
+                    "goes_out_per_week": {{ form_data.goes_out_per_week }},
+                    "talks_to_new_people": {{ form_data.talks_to_new_people }}
+                }
+            </script>
+            {% endif %}
         </article>
         {% endif %}
 
@@ -134,6 +170,52 @@
                 });
             }
         });
+
+        // AI Narrator on-demand fetch
+        const aiBtn = document.getElementById('ai-sparkle-btn');
+        const aiNarrator = document.getElementById('ai-narrator');
+        const aiBody = document.getElementById('ai-narrator-body');
+        const aiDataEl = document.getElementById('ai-prediction-data');
+
+        if (aiBtn && aiNarrator && aiBody && aiDataEl) {
+            aiBtn.addEventListener('click', async () => {
+                if (aiBtn.disabled) return;
+                aiBtn.disabled = true;
+                aiBtn.classList.add('loading');
+                aiNarrator.hidden = false;
+                aiBody.innerHTML = '<span class="ai-narrator-loading">⏳ The AI Narrator is thinking…</span>';
+
+                let predictionData;
+                try {
+                    predictionData = JSON.parse(aiDataEl.textContent);
+                } catch (err) {
+                    aiBody.textContent = '💭 The AI Narrator is sleeping right now. Try again in a moment! 😴';
+                    return;
+                }
+
+                try {
+                    const res = await fetch('/ai_narrate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(predictionData)
+                    });
+                    const data = await res.json();
+                    if (data.success && data.narrative) {
+                        aiBody.textContent = data.narrative;
+                        // Hide the button on success — it's a one-shot per prediction
+                        aiBtn.style.display = 'none';
+                    } else {
+                        aiBody.textContent = data.message || '💭 The AI Narrator is sleeping right now. Try again in a moment! 😴';
+                        aiBtn.disabled = false;
+                        aiBtn.classList.remove('loading');
+                    }
+                } catch (err) {
+                    aiBody.textContent = '💭 The AI Narrator is sleeping right now. Try again in a moment! 😴';
+                    aiBtn.disabled = false;
+                    aiBtn.classList.remove('loading');
+                }
+            });
+        }
     </script>
 </body>
 </html>
