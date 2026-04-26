@@ -1,12 +1,24 @@
-# 🛠️ AI Narrator Build Plan
+# 🛠️ AI Narrator Build Plan — Hybrid System / Stage 3 Chaining
 
-This document captures the design and implementation plan for adding a Gemini-powered AI narrator to the True Love AI prediction page.
+This document captures the design and implementation plan for **chaining** a Gemma neural network (Stage 3) onto the existing classical ML pipeline (Stages 1 + 2) — turning the True Love AI app into a true **hybrid system**.
 
 ---
 
 ## 🎯 Goal
 
-After a user receives an ML prediction, allow them to **click a sparkle icon** to get a playful, 4-5 sentence AI-generated explanation of their result.
+After a user receives a classical ML prediction (Decision Tree + Polynomial Ridge), allow them to **click a sparkle icon** to invoke the **Stage 3 neural network** (Gemma LLM). The neural network is **chained** to the upstream classical ML output — it receives the category + months + features and produces a 4-5 sentence narrative.
+
+### Hybrid Architecture
+
+```
+  Stage 1                Stage 2                Stage 3
+  Classical ML           Classical ML           Neural Network
+  Decision Tree    →     Polynomial Ridge →     Gemma LLM
+  (sklearn)              (sklearn)              (transformer)
+  → category             → months               → narrative
+```
+
+This is the **chaining handoff**: classical ML's structured numbers feed the neural network's natural-language reasoning. Two different model families, working as one hybrid system.
 
 **Why on-demand (not auto):**
 - Saves Gemini API quota (free tier: 15 req/min, 1500/day)

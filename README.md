@@ -1,6 +1,22 @@
 # 💘 When Will I Find True Love?
 
-A playful machine learning web application that predicts when someone will find "true love" based on lifestyle data. Built for educational purposes to demonstrate classification and regression models.
+A playful **hybrid AI web application** that predicts when someone will find "true love" based on lifestyle data. Built for educational purposes to demonstrate a real-world hybrid architecture **chaining classical machine learning with a neural network (LLM)**.
+
+### 🧬 Hybrid Architecture (3 chained models)
+
+```
+  ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────────┐
+  │  Decision Tree   │ →  │ Polynomial Ridge │ →  │ Gemma Neural Network │
+  │  Classifier      │    │ Regression       │    │ (LLM via Gemini API) │
+  │  (sklearn)       │    │ (sklearn)        │    │                      │
+  │  → category      │    │ → months         │    │ → witty narrative    │
+  └──────────────────┘    └──────────────────┘    └──────────────────────┘
+        Stage 1                  Stage 2                  Stage 3
+        Classical ML             Classical ML             Neural Network
+```
+
+**Hybrid system** = different model families working together. **Chaining** = the output of each stage feeds the next.
+
 
 ## 🌐 Live Demo
 
@@ -24,12 +40,13 @@ Great for:
 
 ---
 
-## �🎯 Features
+## 🎯 Features
 
-- **Dual ML Models:**
-  - Decision Tree Classifier (predicts category: Very Soon, Soon, Eventually, Keep Trying)
-  - Polynomial Ridge Regression (predicts timeline in months)
-  - Model architecture transparency (19 nodes, 10 leaves, 28 polynomial features)
+- **Hybrid AI System (3 chained models):**
+  - **Stage 1 — Decision Tree Classifier** (sklearn) — predicts category: Very Soon, Soon, Eventually, Keep Trying
+  - **Stage 2 — Polynomial Ridge Regression** (sklearn) — predicts timeline in months
+  - **Stage 3 — Gemma Neural Network** (Google's LLM via Gemini API) — generates a witty, sarcastic narrative chained from Stage 1 + 2 outputs
+  - Model architecture transparency (19 nodes, 10 leaves, 28 polynomial features, transformer-based LLM)
   
 - **Interactive Web Interface:**
   - Modern, elegant UI with enhanced typography and visual hierarchy
@@ -110,34 +127,49 @@ Visit `http://localhost:5000` in your browser.
   - Secondary: `rgb(165, 174, 183)` (cool gray-blue)
 - **Style:** Contemporary, glassmorphism, smooth animations
 
-## 🧠 How It Works
+## 🧠 How It Works (The Hybrid Chain)
 
 1. **Data Collection:** User inputs 6 lifestyle features (validated server-side)
-2. **Prediction:** 
+2. **Stage 1 — Classical ML (Classification):**
    - Decision Tree classifies into outcome category (with probability distribution)
+3. **Stage 2 — Classical ML (Regression):**
    - Polynomial Ridge Regression estimates months to love (with feature interactions)
-3. **Explanation:** ML-driven system provides detailed reasoning:
+4. **Stage 3 — Neural Network (LLM, On-Demand):**
+   - User clicks the ✨ sparkle icon
+   - Stage 1 + Stage 2 outputs are **chained** into a structured prompt
+   - Gemma neural network (transformer LLM) generates a witty, sarcastic narrative
+   - This is the **hybrid handoff**: classical ML's numbers → neural network's natural language
+5. **Rule-Based Explanation:** ML-driven system provides instant feedback:
    - Model confidence levels
    - Feature-specific analysis (✓ Strengths, ⚠ Areas to Improve)
-   - Contextual insights based on training data patterns
-   - Both models explicitly mentioned
-4. **Training Pipeline:**
-   - CSV data → Model training → Pickle storage
+   - Both classical models explicitly mentioned
+6. **Training Pipeline:**
+   - CSV data → Stage 1+2 model training → Pickle storage
+   - Stage 3 uses a pre-trained foundation model (no local training needed)
    - Edit `data.csv` directly to add/modify training data
-   - Click "Retrain Models" in admin to update predictions
+   - Click "Retrain Models" in admin to update Stage 1+2 predictions
    - Models persist between sessions for fast startup
 
 ## 📊 Machine Learning Details
 
-### Decision Tree Classifier
-- `max_depth=4` - Prevents deep memorization
-- `min_samples_leaf=3` - Requires minimum samples per leaf
+### Stage 1: Decision Tree Classifier (Classical ML)
+- `max_depth=4` — Prevents deep memorization
+- `min_samples_leaf=3` — Requires minimum samples per leaf
 - Purpose: Prevents overfitting on small datasets
+- Output **chained** into Stage 3 prompt as `category`
 
-### Polynomial Ridge Regression
-- `degree=2` - Captures non-linear relationships
-- `alpha=1.5` - Regularization to prevent overfitting
+### Stage 2: Polynomial Ridge Regression (Classical ML)
+- `degree=2` — Captures non-linear relationships
+- `alpha=1.5` — Regularization to prevent overfitting
 - Purpose: Stable predictions even with small/growing datasets
+- Output **chained** into Stage 3 prompt as `months`
+
+### Stage 3: Gemma Neural Network (LLM)
+- Model: `gemma-3n-e4b-it` (Google's transformer-based language model via Gemini API)
+- Receives: Stage 1 category + Stage 2 months + raw user inputs
+- Generates: 4-5 sentence sarcastic narrative explaining the chained prediction
+- Purpose: Demonstrates **hybrid architecture** — neural network reasoning over classical ML output
+- See `ai_narrator.py` and `AI_BUILD.md` for prompt engineering details
 
 ## 🔧 Admin Features
 

@@ -222,18 +222,21 @@ All notable changes to the "When Will I Find True Love?" project will be documen
 
 ---
 
-## [2026-04-26] - AI Narrator (Gemini-powered Explanations)
+## [2026-04-26] - AI Narrator: Hybrid System Chaining Neural Network (Stage 3)
 
 ### Added
-- **Hybrid ML + GenAI Architecture**
-  - Added Google Gemini integration via `google-generativeai==0.8.3`
-  - Uses `gemma-3n-e4b-it` model (proven from RJ_BLP_1)
-  - On-demand AI-generated 4-5 sentence narrative explanations
-  - Click the floating ✨ sparkle icon (top-right of prediction card) to invoke
+- **Hybrid Architecture — Chaining Classical ML → Neural Network**
+  - This release upgrades the app from a 2-model classical ML system into a true **hybrid system** that **chains** classical ML output into a neural network (LLM) for natural-language reasoning.
+  - **The chain:** Decision Tree (Stage 1) → Polynomial Ridge (Stage 2) → Gemma Neural Network (Stage 3)
+  - Added Google Gemini SDK integration via `google-generativeai==0.8.3`
+  - **Stage 3 model:** `gemma-3n-e4b-it` — Google's transformer-based neural network LLM (proven from RJ_BLP_1)
+  - On-demand AI-generated 4-5 sentence sarcastic narrative explanations
+  - Click the floating ✨ sparkle icon (top-right of prediction card) to invoke Stage 3
 
-- **`ai_narrator.py` module**
+- **`ai_narrator.py` module — the chaining handoff**
   - Implements proven ROLE / CONTEXT / TASK / INPUT prompt pattern
-  - Builds structured prompts using ML prediction + user input data
+  - **Chains** Stage 1 + Stage 2 outputs into a structured prompt for Stage 3
+  - Builds prompts using classical ML prediction + raw user input data
   - Robust JSON parsing (strips markdown fences)
   - Graceful degradation if API key missing
 
@@ -268,12 +271,14 @@ All notable changes to the "When Will I Find True Love?" project will be documen
 - `DEPLOY.md` — added API key setup section (Step 7b)
 
 ### Educational Value
-- Demonstrates **hybrid AI architecture**: classical ML (sklearn) + GenAI (Gemini)
+- Demonstrates **hybrid AI architecture**: classical ML (sklearn) **chained** with neural network (Gemma transformer LLM)
+- Teaches the **chaining pattern**: classical model output → LLM prompt input
 - Shows **prompt engineering** with structured ROLE / CONTEXT / TASK / INPUT
 - Teaches **API integration** in Flask
 - Models **graceful degradation** patterns
 - Demonstrates **secrets management** via gitignored `config.py`
 - Shows **on-demand async UX** vs blocking renders
+- Real-world example of why hybrid systems beat single-model approaches: classical ML for numbers, neural network for natural language
 
 ### Security
 - API key stored in `config.py` (gitignored, never committed)
