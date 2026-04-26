@@ -261,3 +261,29 @@ This feature teaches:
 6. **Graceful degradation** — building software that doesn't break when one part fails
 
 Perfect alignment with the Software Engineering syllabus.
+
+---
+
+## 🧠 Admin Dashboard Hybrid Teaching Features (Cross-Reference)
+
+After the core AI narrator build, the admin dashboard was extended to make the **hybrid system** and **chaining** process visible for students.
+
+### Added in `templates/admin.html`
+- **Hybrid Pipeline Diagram (top of admin page)**
+  - Stage 1 Decision Tree → Stage 2 Polynomial Ridge → Stage 3 Gemma neural network
+- **Stage 3 Gemma Architecture Card**
+  - Model ID, transformer architecture, status indicator, and chaining explanation
+- **Chain in Action Live Demo**
+  - Shows sample input, Stage 1+2 outputs, and calls Stage 3 on demand
+- **Classical ML vs Neural Network Comparison Table**
+  - Side-by-side view of architecture, training style, outputs, determinism, and runtime
+- **Prompt Inspector**
+  - Collapsible view of the actual ROLE/CONTEXT/TASK/INPUT prompt sent to Gemma
+
+### Supporting Backend + Styling
+- `app.py`: passes `ai_available`, `sample_input`, `sample_category`, `sample_months`, `sample_prompt_preview`
+- `static/css/style.css`: styles all hybrid admin modules (pipeline, stage tags, chain flow, comparison table, prompt preview)
+
+### Related Documentation
+- `README.md` → Admin Features section (hybrid-chain additions)
+- `CHANGELOG.md` → "Admin Dashboard: Hybrid Chain Visual Teaching Layer"
