@@ -338,6 +338,10 @@ def admin():
     
     # Sample prediction to show probabilities (using average profile for mixed probabilities)
     sample_probs = None
+    sample_input = None
+    sample_category = None
+    sample_months = None
+    sample_prompt_preview = None
     if predictor.is_trained:
         sample_input = {
             'social_activity': 5,
@@ -349,7 +353,15 @@ def admin():
         }
         sample_pred = predictor.predict(sample_input)
         sample_probs = {k: round(v * 100, 1) for k, v in sample_pred['probabilities'].items()}
-    
+        sample_category = sample_pred['category']
+        sample_months = sample_pred['months']
+
+        # Build the Stage 3 prompt preview (shows how Stage 1+2 outputs chain into the LLM prompt)
+        prompt_payload = {**sample_input,
+                          'category': sample_category,
+                          'months': sample_months}
+        sample_prompt_preview = ai_narrator.build_prompt(prompt_payload)
+
     # Generate visualization charts
     polynomial_chart = generate_polynomial_curve() if predictor.is_trained else None
     tree_chart = generate_decision_tree_chart() if predictor.is_trained else None
@@ -365,7 +377,12 @@ def admin():
                          model_details=model_details,
                          polynomial_chart=polynomial_chart,
                          tree_chart=tree_chart,
-                         interaction_chart=interaction_chart)
+                         interaction_chart=interaction_chart,
+                         ai_available=ai_narrator.is_available(),
+                         sample_input=sample_input,
+                         sample_category=sample_category,
+                         sample_months=sample_months,
+                         sample_prompt_preview=sample_prompt_preview)
 
 @app.route('/retrain', methods=['POST'])
 def retrain():

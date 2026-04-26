@@ -19,7 +19,55 @@
 <body>
     <main class="container">
         <h1 class="hero-title-small">🧠 Admin Dashboard</h1>
-        <p class="subtitle">Model Lab & Training Metrics</p>
+        <p class="subtitle">Hybrid AI Model Lab & Training Metrics</p>
+
+        <!-- #1 Hybrid System Pipeline Diagram -->
+        <article class="hybrid-pipeline-card">
+            <header>
+                <h2>🧬 Hybrid AI System — 3 Chained Models</h2>
+            </header>
+            <p class="hybrid-subtitle">
+                This app is a <strong>hybrid system</strong> — it <strong>chains</strong> three different models together.
+                Two classical ML models (sklearn) feed their output into a neural network (Gemma transformer LLM via Gemini API).
+            </p>
+
+            <div class="pipeline-diagram">
+                <div class="pipeline-stage stage-classical">
+                    <div class="stage-badge">Stage 1</div>
+                    <div class="stage-icon">🌳</div>
+                    <div class="stage-title">Decision Tree<br>Classifier</div>
+                    <div class="stage-family">Classical ML</div>
+                    <div class="stage-lib">sklearn</div>
+                    <div class="stage-output">→ <code>category</code></div>
+                </div>
+
+                <div class="pipeline-arrow">→</div>
+
+                <div class="pipeline-stage stage-classical">
+                    <div class="stage-badge">Stage 2</div>
+                    <div class="stage-icon">📉</div>
+                    <div class="stage-title">Polynomial Ridge<br>Regression</div>
+                    <div class="stage-family">Classical ML</div>
+                    <div class="stage-lib">sklearn</div>
+                    <div class="stage-output">→ <code>months</code></div>
+                </div>
+
+                <div class="pipeline-arrow">→</div>
+
+                <div class="pipeline-stage stage-neural">
+                    <div class="stage-badge">Stage 3</div>
+                    <div class="stage-icon">🧠</div>
+                    <div class="stage-title">Gemma LLM<br>(gemma-3n-e4b-it)</div>
+                    <div class="stage-family">Neural Network</div>
+                    <div class="stage-lib">Gemini API</div>
+                    <div class="stage-output">→ <code>narrative</code></div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>🔗 The chaining handoff:</strong> Stage 1's <code>category</code> + Stage 2's <code>months</code> are injected into the Stage 3 prompt, so the neural network reasons over the classical ML output. This is what makes it a <strong>hybrid system</strong> — two different model families working as one.
+            </div>
+        </article>
 
         <!-- Dataset Summary -->
         <article>
@@ -53,11 +101,11 @@
         <!-- ML Model Architecture -->
         <article>
             <header>
-                <h2>🤖 ML Model Architecture (Proof of Real ML)</h2>
+                <h2>🤖 Model Architecture — All 3 Stages of the Hybrid Chain</h2>
             </header>
             {% if model_details %}
             <div class="model-arch">
-                <h3>Decision Tree Classifier (sklearn)</h3>
+                <h3><span class="stage-tag classical">Stage 1 · Classical ML</span> Decision Tree Classifier (sklearn)</h3>
                 <div class="arch-grid">
                     <div>
                         <div class="arch-stat-label">Max Depth</div>
@@ -82,7 +130,7 @@
             </div>
 
             <div class="model-arch">
-                <h3>Polynomial Ridge Regression (sklearn)</h3>
+                <h3><span class="stage-tag classical">Stage 2 · Classical ML</span> Polynomial Ridge Regression (sklearn)</h3>
                 <div class="arch-grid">
                     <div>
                         <div class="arch-stat-label">Polynomial Degree</div>
@@ -103,6 +151,40 @@
                 </div>
                 <div class="info-box">
                     <strong>Note:</strong> Polynomial features expand 6 inputs into {{ model_details.ridge.n_features_out }} features (includes interactions like social_activity × confidence_level)
+                </div>
+            </div>
+
+            <div class="model-arch model-arch-neural">
+                <h3><span class="stage-tag neural">Stage 3 · Neural Network</span> Gemma LLM (Google Gemini API)</h3>
+                <div class="arch-grid">
+                    <div>
+                        <div class="arch-stat-label">Model ID</div>
+                        <div class="arch-stat-value arch-stat-text">gemma-3n-e4b-it</div>
+                    </div>
+                    <div>
+                        <div class="arch-stat-label">Architecture</div>
+                        <div class="arch-stat-value arch-stat-text">Transformer<br>(decoder-only)</div>
+                    </div>
+                    <div>
+                        <div class="arch-stat-label">Parameters</div>
+                        <div class="arch-stat-value arch-stat-text">~4 billion<br>(e4b variant)</div>
+                    </div>
+                    <div>
+                        <div class="arch-stat-label">Status</div>
+                        <div class="arch-stat-value arch-stat-text">
+                            {% if ai_available %}
+                                <span class="status-ok">✓ Available</span>
+                            {% else %}
+                                <span class="status-warn">⚠ API Key Missing</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <strong>🔗 Chained inputs:</strong> This neural network receives Stage 1's <code>category</code> + Stage 2's <code>months</code> + the raw user features, all embedded in a structured <code>ROLE / CONTEXT / TASK / INPUT</code> prompt. It returns JSON with a 4-5 sentence witty narrative.
+                </div>
+                <div class="info-box">
+                    <strong>🧠 Why a neural network here?</strong> Decision trees and regression can't write natural language. Gemma — a transformer-based language model pre-trained on trillions of tokens — takes our ML numbers and turns them into something a human can actually read. That's the power of a <strong>hybrid system</strong>.
                 </div>
             </div>
             {% else %}
@@ -252,12 +334,240 @@
             </div>
         </article>
 
+        <!-- #3 Chain in Action (Live Demo) -->
+        <article class="chain-demo-card">
+            <header>
+                <h2>🔗 Chain in Action — Watch the Hybrid System Work</h2>
+            </header>
+            <p style="color: rgb(165, 174, 183); margin-bottom: 1.25rem; font-size: 0.95rem;">
+                Click the button below to run all 3 stages of the hybrid chain on a sample input.
+                Watch how each model's output becomes the next model's input.
+            </p>
+
+            {% if sample_input %}
+            <div class="chain-flow">
+                <div class="chain-step">
+                    <div class="chain-step-label">📥 Input (6 features)</div>
+                    <div class="chain-step-content">
+                        Social={{ sample_input.social_activity }},
+                        Confidence={{ sample_input.confidence_level }},
+                        Hobbies={{ sample_input.hobbies_count }},
+                        Screen={{ sample_input.screen_time }}hrs,
+                        GoesOut={{ sample_input.goes_out_per_week }}x,
+                        TalksToNew={{ sample_input.talks_to_new_people }}
+                    </div>
+                </div>
+
+                <div class="chain-arrow-down">↓</div>
+
+                <div class="chain-step chain-step-classical">
+                    <div class="chain-step-label"><span class="stage-tag classical">Stage 1</span> Decision Tree says:</div>
+                    <div class="chain-step-content chain-step-big">
+                        Category: <strong>{{ sample_category }}</strong>
+                    </div>
+                </div>
+
+                <div class="chain-arrow-down">↓ <span class="chain-arrow-label">chained into Stage 3 prompt</span></div>
+
+                <div class="chain-step chain-step-classical">
+                    <div class="chain-step-label"><span class="stage-tag classical">Stage 2</span> Polynomial Ridge says:</div>
+                    <div class="chain-step-content chain-step-big">
+                        Months: <strong>{{ sample_months }}</strong>
+                    </div>
+                </div>
+
+                <div class="chain-arrow-down">↓ <span class="chain-arrow-label">chained into Stage 3 prompt</span></div>
+
+                <div class="chain-step chain-step-neural">
+                    <div class="chain-step-label"><span class="stage-tag neural">Stage 3</span> Gemma Neural Network says:</div>
+                    <div class="chain-step-content" id="chain-narrative">
+                        {% if ai_available %}
+                        <em style="color: rgb(165, 174, 183);">Click the button below to invoke Stage 3 and generate a narrative…</em>
+                        {% else %}
+                        <em style="color: rgb(165, 174, 183);">⚠ Stage 3 offline (no API key configured on server).</em>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {% if ai_available %}
+            <button type="button" class="retrain-btn chain-run-btn" id="chain-run-btn">
+                ▶ Run the Full Chain (Stage 1 → 2 → 3)
+            </button>
+            <div id="chain-run-message" style="text-align: center; margin-top: 0.75rem; color: rgb(165, 174, 183); font-size: 0.9rem;"></div>
+            <script type="application/json" id="chain-payload-data">
+                {
+                    "category": "{{ sample_category }}",
+                    "months": {{ sample_months }},
+                    "social_activity": {{ sample_input.social_activity }},
+                    "confidence_level": {{ sample_input.confidence_level }},
+                    "hobbies_count": {{ sample_input.hobbies_count }},
+                    "screen_time": {{ sample_input.screen_time }},
+                    "goes_out_per_week": {{ sample_input.goes_out_per_week }},
+                    "talks_to_new_people": {{ sample_input.talks_to_new_people }}
+                }
+            </script>
+            {% endif %}
+            {% else %}
+            <p style="color: rgb(165, 174, 183); text-align: center; padding: 2rem;">Train models to see the chain in action.</p>
+            {% endif %}
+        </article>
+
+        <!-- #4 Classical ML vs Neural Network Comparison -->
+        <article>
+            <header>
+                <h2>⚖️ Classical ML vs Neural Network — Why Chain Them?</h2>
+            </header>
+            <p style="color: rgb(165, 174, 183); margin-bottom: 1.25rem; font-size: 0.95rem;">
+                The two halves of our hybrid system are fundamentally different technologies.
+                Each is good at things the other can't do — that's why we chain them.
+            </p>
+
+            <div class="comparison-table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th class="col-classical">Stages 1 &amp; 2<br><small>Classical ML</small></th>
+                            <th class="col-neural">Stage 3<br><small>Neural Network</small></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Library</strong></td>
+                            <td>scikit-learn</td>
+                            <td>Google Gemini API</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Architecture</strong></td>
+                            <td>Decision Tree + Polynomial Ridge</td>
+                            <td>Transformer (decoder-only)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Training</strong></td>
+                            <td>Trained locally on <code>data.csv</code></td>
+                            <td>Pre-trained foundation model</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Parameters</strong></td>
+                            <td>~19 tree nodes + 28 poly coeffs</td>
+                            <td>~4 billion</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Output type</strong></td>
+                            <td>Numbers (category, months)</td>
+                            <td>Natural language</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Deterministic?</strong></td>
+                            <td>✓ Same input = same output</td>
+                            <td>✗ Varies each run (sampling)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Runs on</strong></td>
+                            <td>PythonAnywhere server (local CPU)</td>
+                            <td>Google's cloud GPUs/TPUs</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cost per prediction</strong></td>
+                            <td>Free (local compute)</td>
+                            <td>Free tier: 15/min, 1500/day</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Best at</strong></td>
+                            <td>Fast, stable, interpretable math</td>
+                            <td>Reasoning &amp; language</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 The takeaway:</strong> Neither technology alone is enough.
+                Classical ML gives us <em>structured numbers</em>. The neural network turns those numbers into <em>natural language</em>.
+                Chaining them = a <strong>hybrid system</strong> that's more useful than the sum of its parts.
+            </div>
+        </article>
+
+        <!-- #5 Stage 3 Prompt Inspector -->
+        {% if sample_prompt_preview %}
+        <article>
+            <header>
+                <h2>🔍 Stage 3 Prompt Inspector</h2>
+            </header>
+            <p style="color: rgb(165, 174, 183); margin-bottom: 1rem; font-size: 0.95rem;">
+                This is the <em>actual</em> prompt sent to the Gemma neural network, built from the sample input above.
+                Notice how Stage 1's <code>category</code> and Stage 2's <code>months</code> are <strong>chained</strong> into the <code>### INPUT ###</code> section.
+            </p>
+
+            <details class="prompt-details">
+                <summary>📜 Show full chained prompt (sent to Gemma)</summary>
+                <pre class="prompt-preview"><code>{{ sample_prompt_preview }}</code></pre>
+            </details>
+
+            <div class="info-box">
+                <strong>🎯 Prompt engineering pattern:</strong> <code>ROLE / CONTEXT / TASK / INPUT</code> — a structured way to tell the LLM who it is, what it's doing, and what data to work with. The <code>INPUT</code> section is where the chaining happens: Stages 1 + 2 output + raw features, all in one place.
+            </div>
+        </article>
+        {% endif %}
+
         <nav class="nav-link">
             <a href="{{ url_for('index') }}">← Back to Prediction</a>
         </nav>
     </main>
 
     <script>
+        // #3 Chain in Action — live demo button
+        const chainBtn = document.getElementById('chain-run-btn');
+        if (chainBtn) {
+            chainBtn.addEventListener('click', async () => {
+                const target = document.getElementById('chain-narrative');
+                const msg = document.getElementById('chain-run-message');
+                const payloadEl = document.getElementById('chain-payload-data');
+                chainBtn.disabled = true;
+                chainBtn.textContent = '⏳ Running chain… (Stage 3 calling Gemma)';
+                target.innerHTML = '<em style="color: rgb(165, 174, 183);">⏳ Stage 3 is thinking…</em>';
+                msg.textContent = '';
+
+                let payload = null;
+                try {
+                    payload = payloadEl ? JSON.parse(payloadEl.textContent) : null;
+                } catch (err) {
+                    target.innerHTML = '<em style="color: rgb(165, 174, 183);">Could not parse chained payload.</em>';
+                    msg.textContent = '✗ Invalid payload JSON';
+                    chainBtn.textContent = '▶ Retry';
+                    chainBtn.disabled = false;
+                    return;
+                }
+
+                try {
+                    const res = await fetch('/ai_narrate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+                    if (data.success && data.narrative) {
+                        target.innerHTML = '<em>"' + data.narrative.replace(/</g, '&lt;') + '"</em>';
+                        msg.textContent = '✓ Full hybrid chain executed successfully (Stage 1 → 2 → 3)';
+                        msg.style.color = 'rgb(211, 169, 153)';
+                        chainBtn.textContent = '▶ Run Again';
+                        chainBtn.disabled = false;
+                    } else {
+                        target.innerHTML = '<em style="color: rgb(165, 174, 183);">' + (data.message || 'Stage 3 returned no narrative.') + '</em>';
+                        msg.textContent = '✗ Stage 3 failed — check server logs';
+                        chainBtn.textContent = '▶ Retry';
+                        chainBtn.disabled = false;
+                    }
+                } catch (err) {
+                    target.innerHTML = '<em style="color: rgb(165, 174, 183);">Network error calling Stage 3.</em>';
+                    msg.textContent = '✗ ' + err.message;
+                    chainBtn.textContent = '▶ Retry';
+                    chainBtn.disabled = false;
+                }
+            });
+        }
+
         function retrainModels() {
             const button = document.querySelector('button.retrain-btn');
             const message = document.getElementById('retrain-message');
