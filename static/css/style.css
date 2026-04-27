@@ -38,6 +38,16 @@ h1, h2, h3, h4 {
 /* ========================================
    Hero Title
    ======================================== */
+.hero-image {
+    display: block;
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    margin: 0 auto 1rem;
+    border-radius: 1.25rem;
+    box-shadow: 0 8px 24px rgba(33, 29, 30, 0.12);
+}
+
 .hero-title {
     font-family: 'Lora', serif;
     text-align: center;
@@ -493,7 +503,7 @@ button.retrain-btn {
    Container Sizing
    ======================================== */
 main.container {
-    padding: 1rem;
+    padding: 30px 1rem 1rem;
 }
 
 main.container.narrow {
@@ -502,7 +512,7 @@ main.container.narrow {
 
 @media (min-width: 768px) {
     main.container {
-        padding: 2rem;
+        padding: 30px 2rem 2rem;
     }
 }
 

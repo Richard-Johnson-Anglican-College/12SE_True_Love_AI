@@ -18,11 +18,9 @@
 </head>
 <body>
     <main class="container narrow">
-        <h1 class="hero-title">When Will I Find<br>True Love?</h1>
-
-        <div class="disclaimer">
-            ⚠️ <strong>Disclaimer:</strong> This is a fun machine learning demo. It does NOT predict real-life outcomes. (If it says 100 months, please don't panic).
-        </div>
+        <img src="{{ url_for('static', filename='header.jpg') }}"
+             alt="When Will I Find True Love?"
+             class="hero-image">
 
         {% if error %}
         <article class="warnings-card">
